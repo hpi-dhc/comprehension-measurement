@@ -38,7 +38,7 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
         margin: const EdgeInsets.all(8.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -55,6 +55,7 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
                   Text(widget.question, style: widget.headingTheme),
                 ],
               ),
+              Divider(thickness: 2, color: theme.backgroundColor),
               ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
@@ -88,11 +89,13 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
                     ),
                     onPressed: () {
                       // TODO: send the answer to the backend
-                      http.post(
-                        widget.endpoint,
-                        body: {
-                          'questionId': widget.questionId.toString(),
-                          'answerId': answerId.toString(),
+                      http.get(
+                        Uri.parse(
+                            'https://xrnczlpeghrewcseaxyq.supabase.co/rest/v1/questions?id=eq.1&select=*'),
+                        headers: {
+                          'apikey':
+                              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhybmN6bHBlZ2hyZXdjc2VheHlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTI5NjIzNTksImV4cCI6MTk2ODUzODM1OX0.3SPL2iHbDRS4m42n6UlOIuV8tFMShi7b9Mzh9l8E4Gs',
+                          'Authorization': 'Bearer SUPABASE_KEY'
                         },
                       );
                       Navigator.maybePop(context);
