@@ -1,7 +1,2 @@
-library comprehension_measurement;
-
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/main.dart' show measureComprehension;
+export 'src/types/single_choice.dart' show SingleChoiceWidget;
