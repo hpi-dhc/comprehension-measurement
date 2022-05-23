@@ -10,12 +10,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+<<<<<<< HEAD
   http: ^0.13.4
+=======
+  json_annotation: ^4.5.0
+  supabase: ^0.3.4
+>>>>>>> main
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  build_runner: ^2.1.11
+  json_serializable: ^6.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
