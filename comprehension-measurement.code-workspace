@@ -1,16 +1,8 @@
 {
   "folders": [
     {
-      "name": "🌍 Everything",
-      "path": "."
-    },
-    {
-      "name": "⚙️ Backend",
-      "path": "backend"
-    },
-    {
       "name": "📱 Package",
-      "path": "package"
+      "path": "."
     },
   ],
 }
