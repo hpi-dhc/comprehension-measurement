@@ -28,7 +28,7 @@ class SingleChoiceWidget extends StatelessWidget {
             value: question.answers[index].id,
             groupValue: model.singleChoiceAnswers[questionId],
             onChanged: (int? value) {
-              model.changeAnswer(questionId, value);
+              model.changeSingleChoiceAnswer(questionId, value);
             },
           );
         },
