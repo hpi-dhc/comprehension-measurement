@@ -1,4 +1,5 @@
 import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
+import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/types/single_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final PageController controller = PageController();
     return Container(
       margin: const EdgeInsets.all(8),
       width: double.infinity,
@@ -17,31 +19,96 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Consumer<ComprehensionMeasurementModel>(
           builder: (context, value, child) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Icon(
                         Icons.emoji_emotions,
                         color: theme.primaryColor,
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(value.survey!.questions[0].title),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.close),
+                      )
                     ],
                   ),
-                  Divider(thickness: 2, color: theme.backgroundColor),
-                  SingleChoiceWidget(questionId: 1, model: value),
-                  ElevatedButton(
-                      onPressed: () => value.saveSingleChoiceAnswer(1),
-                      child: const Text('Send!'))
-                ],
-              ),
+                ),
+                Flexible(
+                  child: PageView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: controller,
+                    children: value.survey!.questions.map(
+                      (question) {
+                        Widget questionWidget;
+
+                        switch (question.type) {
+                          case QuestionType.single_choice:
+                            questionWidget = SingleChoiceWidget(
+                              questionId: question.id,
+                              model: value,
+                            );
+                            break;
+                          case QuestionType.multiple_choice:
+                            questionWidget = SingleChoiceWidget(
+                              questionId: question.id,
+                              model: value,
+                            );
+                            break;
+                          case QuestionType.text_answer:
+                            questionWidget = SingleChoiceWidget(
+                              questionId: question.id,
+                              model: value,
+                            );
+                            break;
+                        }
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Divider(
+                                thickness: 2,
+                                height: 2,
+                                color: theme.backgroundColor),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                                horizontal: 16.0,
+                              ),
+                              child: Text(
+                                question.title,
+                              ),
+                            ),
+                            Divider(thickness: 2, color: theme.backgroundColor),
+                            questionWidget,
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  value.saveSingleChoiceAnswer(question.id);
+                                  controller.nextPage(
+                                    duration: const Duration(milliseconds: 400),
+                                    curve: Curves.easeInOut,
+                                  );
+                                },
+                                child: const Text('Send!'),
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    ).toList(),
+                  ),
+                ),
+              ],
             );
           },
         ),
