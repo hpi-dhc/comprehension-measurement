@@ -19,69 +19,96 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Consumer<ComprehensionMeasurementModel>(
           builder: (context, value, child) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: controller,
-                children: value.survey!.questions.map(
-                  (question) {
-                    Widget questionWidget;
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.emoji_emotions,
+                        color: theme.primaryColor,
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.close),
+                      )
+                    ],
+                  ),
+                ),
+                Flexible(
+                  child: PageView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: controller,
+                    children: value.survey!.questions.map(
+                      (question) {
+                        Widget questionWidget;
 
-                    switch (question.type) {
-                      case QuestionType.single_choice:
-                        questionWidget = SingleChoiceWidget(
-                          questionId: question.id,
-                          model: value,
-                        );
-                        break;
-                      case QuestionType.multiple_choice:
-                        questionWidget = SingleChoiceWidget(
-                          questionId: question.id,
-                          model: value,
-                        );
-                        break;
-                      case QuestionType.text_answer:
-                        questionWidget = SingleChoiceWidget(
-                          questionId: question.id,
-                          model: value,
-                        );
-                        break;
-                    }
-
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.emoji_emotions,
-                              color: theme.primaryColor,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(question.title),
-                          ],
-                        ),
-                        Divider(thickness: 2, color: theme.backgroundColor),
-                        questionWidget,
-                        ElevatedButton(
-                          onPressed: () {
-                            value.saveSingleChoiceAnswer(question.id);
-                            controller.nextPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeInOut,
+                        switch (question.type) {
+                          case QuestionType.single_choice:
+                            questionWidget = SingleChoiceWidget(
+                              questionId: question.id,
+                              model: value,
                             );
-                          },
-                          child: const Text('Send!'),
-                        )
-                      ],
-                    );
-                  },
-                ).toList(),
-              ),
+                            break;
+                          case QuestionType.multiple_choice:
+                            questionWidget = SingleChoiceWidget(
+                              questionId: question.id,
+                              model: value,
+                            );
+                            break;
+                          case QuestionType.text_answer:
+                            questionWidget = SingleChoiceWidget(
+                              questionId: question.id,
+                              model: value,
+                            );
+                            break;
+                        }
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Divider(
+                                thickness: 2,
+                                height: 2,
+                                color: theme.backgroundColor),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                                horizontal: 16.0,
+                              ),
+                              child: Text(
+                                question.title,
+                              ),
+                            ),
+                            Divider(thickness: 2, color: theme.backgroundColor),
+                            questionWidget,
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  value.saveSingleChoiceAnswer(question.id);
+                                  controller.nextPage(
+                                    duration: const Duration(milliseconds: 400),
+                                    curve: Curves.easeInOut,
+                                  );
+                                },
+                                child: const Text('Send!'),
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    ).toList(),
+                  ),
+                ),
+              ],
             );
           },
         ),
