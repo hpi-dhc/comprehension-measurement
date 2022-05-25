@@ -1,8 +1,5 @@
-import 'package:comprehension_measurement/src/models/answer.dart';
 import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:supabase/supabase.dart';
 
 class SingleChoiceWidget extends StatelessWidget {
   const SingleChoiceWidget({
@@ -28,7 +25,7 @@ class SingleChoiceWidget extends StatelessWidget {
             value: question.answers[index].id,
             groupValue: model.singleChoiceAnswers[questionId],
             onChanged: (int? value) {
-              model.changeAnswer(questionId, value);
+              model.changeSingleChoiceAnswer(questionId, value);
             },
           );
         },
