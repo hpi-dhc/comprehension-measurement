@@ -13,11 +13,6 @@ class TextAnswerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final question = model.survey!.questions
-        .where((question) => question.id == questionId)
-        .first;
-
     if (model.textAnswers[questionId] == null) {
       model.textAnswers[questionId] = '';
     }

@@ -13,7 +13,6 @@ class MultipleChoiceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final question = model.survey!.questions
         .where((question) => question.id == questionId)
         .first;
