@@ -75,13 +75,10 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   void saveSingleChoiceAnswer(questionId) async {
     final answerId = singleChoiceAnswers[questionId];
 
-    // TODO: Add remote procedure call to increment by 1 -> https://database.dev/increment-field-value
-
-    await client
-        .from('answers')
-        .update({'times_selected': 3})
-        .eq('id', answerId)
-        .execute();
+    await client.rpc(
+      'select_answer',
+      params: {'row_id': answerId},
+    ).execute();
   }
 
   void saveMultipleChoiceAnswer(int questionId) async {
@@ -92,11 +89,10 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     }
 
     for (int answerId in answerIds) {
-      await client
-          .from('answers')
-          .update({'times_selected': 3})
-          .eq('id', answerId)
-          .execute();
+      await client.rpc(
+        'select_answer',
+        params: {'row_id': answerId},
+      ).execute();
     }
   }
 
