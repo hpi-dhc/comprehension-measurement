@@ -21,23 +21,20 @@ class MultipleChoiceWidget extends StatelessWidget {
       model.multipleChoiceAnswers[questionId] = {};
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return CheckboxListTile(
-              controlAffinity: ListTileControlAffinity.platform,
-              value: model.multipleChoiceAnswers[questionId]!
-                  .contains(question.answers[index].id),
-              title: Text(question.answers[index].answer_text),
-              onChanged: (bool? value) {
-                model.changeMultipleChoiceAnswer(
-                    questionId, question.answers[index].id);
-              },
-            );
-          },
-          itemCount: question.answers.length),
-    );
+    return ListView.builder(
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return CheckboxListTile(
+            controlAffinity: ListTileControlAffinity.platform,
+            value: model.multipleChoiceAnswers[questionId]!
+                .contains(question.answers[index].id),
+            title: Text(question.answers[index].answer_text),
+            onChanged: (bool? value) {
+              model.changeMultipleChoiceAnswer(
+                  questionId, question.answers[index].id);
+            },
+          );
+        },
+        itemCount: question.answers.length);
   }
 }

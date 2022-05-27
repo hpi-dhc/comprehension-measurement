@@ -1,6 +1,8 @@
 import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
+import 'package:comprehension_measurement/src/types/multi_choice.dart';
 import 'package:comprehension_measurement/src/types/single_choice.dart';
+import 'package:comprehension_measurement/src/types/text_answer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,13 +59,13 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                             );
                             break;
                           case QuestionType.multiple_choice:
-                            questionWidget = SingleChoiceWidget(
+                            questionWidget = MultipleChoiceWidget(
                               questionId: question.id,
                               model: value,
                             );
                             break;
                           case QuestionType.text_answer:
-                            questionWidget = SingleChoiceWidget(
+                            questionWidget = TextAnswerWidget(
                               questionId: question.id,
                               model: value,
                             );
@@ -71,8 +73,8 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                         }
 
                         return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Divider(
                                 thickness: 2,
@@ -93,7 +95,18 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                               padding: const EdgeInsets.all(16.0),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  value.saveSingleChoiceAnswer(question.id);
+                                  switch (question.type) {
+                                    case QuestionType.single_choice:
+                                      value.saveSingleChoiceAnswer(question.id);
+                                      break;
+                                    case QuestionType.multiple_choice:
+                                      value.saveMultipleChoiceAnswer(
+                                          question.id);
+                                      break;
+                                    case QuestionType.text_answer:
+                                      value.saveTextAnswer(question.id);
+                                      break;
+                                  }
                                   controller.nextPage(
                                     duration: const Duration(milliseconds: 400),
                                     curve: Curves.easeInOut,

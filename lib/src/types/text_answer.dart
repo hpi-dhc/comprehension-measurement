@@ -18,7 +18,10 @@ class TextAnswerWidget extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(
+        vertical: 0.0,
+        horizontal: 8.0,
+      ),
       child: TextField(
         maxLines: null,
         onChanged: (String value) {
