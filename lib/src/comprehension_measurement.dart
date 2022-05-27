@@ -3,6 +3,7 @@ import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/types/multi_choice.dart';
 import 'package:comprehension_measurement/src/types/single_choice.dart';
 import 'package:comprehension_measurement/src/types/text_answer.dart';
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,7 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                   ),
                 ),
                 Flexible(
-                  child: PageView(
+                  child: ExpandablePageView(
                     physics: const NeverScrollableScrollPhysics(),
                     controller: controller,
                     children: value.survey!.questions.map(

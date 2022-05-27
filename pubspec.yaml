@@ -14,6 +14,7 @@ dependencies:
   json_annotation: ^4.5.0
   provider: ^6.0.3
   supabase: ^0.3.4
+  expandable_page_view: ^1.0.14
 
 dev_dependencies:
   flutter_test:
