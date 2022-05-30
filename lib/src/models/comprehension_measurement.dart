@@ -106,14 +106,9 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   Future<bool> saveTextAnswer(int questionId) async {
     final answerText = textAnswers[questionId];
 
-    if (answerText == null) {
+    if (answerText == null || answerText == '') {
       return false;
     }
-
-    if (answerText == '') {
-      return false;
-    }
-
     await client.from('text_answers').insert([
       {
         'answer_text': answerText,
