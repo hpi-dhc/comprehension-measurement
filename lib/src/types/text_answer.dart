@@ -13,10 +13,6 @@ class TextAnswerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (model.textAnswers[questionId] == null) {
-      model.textAnswers[questionId] = '';
-    }
-
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 0.0,

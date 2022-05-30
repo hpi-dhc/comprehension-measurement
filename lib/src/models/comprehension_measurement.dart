@@ -72,20 +72,30 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveSingleChoiceAnswer(questionId) async {
+  Future<bool> saveSingleChoiceAnswer(questionId) async {
     final answerId = singleChoiceAnswers[questionId];
+
+    if (answerId == null) {
+      return false;
+    }
 
     await client.rpc(
       'select_answer',
       params: {'row_id': answerId},
     ).execute();
+
+    return true;
   }
 
-  void saveMultipleChoiceAnswer(int questionId) async {
+  Future<bool> saveMultipleChoiceAnswer(int questionId) async {
     final answerIds = multipleChoiceAnswers[questionId];
 
-    if (answerIds!.isEmpty) {
-      return;
+    if (answerIds == null) {
+      return false;
+    }
+
+    if (answerIds.isEmpty) {
+      return false;
     }
 
     for (int answerId in answerIds) {
@@ -94,10 +104,19 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
         params: {'row_id': answerId},
       ).execute();
     }
+    return true;
   }
 
-  void saveTextAnswer(int questionId) async {
+  Future<bool> saveTextAnswer(int questionId) async {
     final answerText = textAnswers[questionId];
+
+    if (answerText == null) {
+      return false;
+    }
+
+    if (answerText == '') {
+      return false;
+    }
 
     await client.from('text_answers').insert([
       {
@@ -105,5 +124,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
         'question_id': questionId,
       },
     ]).execute();
+
+    return true;
   }
 }
