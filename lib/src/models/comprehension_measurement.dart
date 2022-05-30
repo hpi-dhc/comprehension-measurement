@@ -90,7 +90,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   Future<bool> saveMultipleChoiceAnswer(int questionId) async {
     final answerIds = multipleChoiceAnswers[questionId];
 
-    if (answerIds == null || answerIds.isEmpty) {
+    if (answerIds == null || answerIds.isEmpty) {
       return false;
     }
 
