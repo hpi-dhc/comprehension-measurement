@@ -109,26 +109,31 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                                     horizontal: 16.0,
                                   ),
                                   child: ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      bool shouldSend = false;
                                       switch (question.type) {
                                         case QuestionType.single_choice:
-                                          value.saveSingleChoiceAnswer(
-                                              question.id);
+                                          shouldSend = await value
+                                              .saveSingleChoiceAnswer(
+                                                  question.id);
                                           break;
                                         case QuestionType.multiple_choice:
-                                          value.saveMultipleChoiceAnswer(
-                                              question.id);
+                                          shouldSend = await value
+                                              .saveMultipleChoiceAnswer(
+                                                  question.id);
                                           break;
                                         case QuestionType.text_answer:
-                                          value.saveTextAnswer(question.id);
+                                          shouldSend = await value
+                                              .saveTextAnswer(question.id);
                                           break;
                                       }
-
-                                      controller.nextPage(
-                                        duration:
-                                            const Duration(milliseconds: 400),
-                                        curve: Curves.easeInOut,
-                                      );
+                                      if (shouldSend) {
+                                        controller.nextPage(
+                                          duration:
+                                              const Duration(milliseconds: 400),
+                                          curve: Curves.easeInOut,
+                                        );
+                                      }
                                     },
                                     child: const Text('Send'),
                                   ),
