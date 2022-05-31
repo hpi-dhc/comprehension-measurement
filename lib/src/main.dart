@@ -3,7 +3,8 @@ import 'package:comprehension_measurement/src/models/comprehension_measurement.d
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Future<void> measureComprehension(BuildContext context, int surveyId) async {
+Future<void> measureComprehension(BuildContext context, int surveyId,
+    Map<String, List<String>> questionContext) async {
   final model = await ComprehensionMeasurementModel.fromSurveyId(surveyId);
 
   showBottomSheet(
@@ -12,7 +13,7 @@ Future<void> measureComprehension(BuildContext context, int surveyId) async {
     builder: (BuildContext context) {
       return ChangeNotifierProvider.value(
         value: model,
-        child: const ComprehensionMeasurementWidget(),
+        child: ComprehensionMeasurementWidget(questionContext: questionContext),
       );
     },
   );

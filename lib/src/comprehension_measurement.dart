@@ -9,7 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ComprehensionMeasurementWidget extends StatelessWidget {
-  const ComprehensionMeasurementWidget({Key? key}) : super(key: key);
+  const ComprehensionMeasurementWidget(
+      {Key? key, required this.questionContext})
+      : super(key: key);
+
+  final Map<String, List<String>> questionContext;
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +66,14 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                               questionWidget = SingleChoiceWidget(
                                 questionId: question.id,
                                 model: value,
+                                context: questionContext,
                               );
                               break;
                             case QuestionType.multiple_choice:
                               questionWidget = MultipleChoiceWidget(
                                 questionId: question.id,
                                 model: value,
+                                context: questionContext,
                               );
                               break;
                             case QuestionType.text_answer:

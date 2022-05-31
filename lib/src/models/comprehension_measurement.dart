@@ -1,4 +1,6 @@
 import 'package:comprehension_measurement/src/constants.dart';
+import 'package:comprehension_measurement/src/models/answer.dart';
+import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/models/survey.dart';
 import 'package:flutter/foundation.dart';
 import 'package:supabase/supabase.dart';
@@ -74,32 +76,67 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
   Future<bool> saveSingleChoiceAnswer(questionId) async {
     final answerId = singleChoiceAnswers[questionId];
+    final Question question = survey!.questions.firstWhere(
+      (element) => element.id == questionId,
+    );
 
     if (answerId == null) {
       return false;
     }
 
-    await client.rpc(
-      'select_answer',
-      params: {'row_id': answerId},
-    ).execute();
+    if (question.is_contextual) {
+      if (question.answers
+          .firstWhere(
+            (element) => element.id == answerId,
+          )
+          .is_right!) {
+        await client.rpc('increment_correct_answers',
+            params: {'row_id': questionId}).execute();
+      }
+      await client.rpc('increment_total_answers',
+          params: {'row_id': questionId}).execute();
+    } else {
+      await client.rpc(
+        'select_answer',
+        params: {'row_id': answerId},
+      ).execute();
+    }
 
     return true;
   }
 
   Future<bool> saveMultipleChoiceAnswer(int questionId) async {
     final answerIds = multipleChoiceAnswers[questionId];
+    final Question question = survey!.questions.firstWhere(
+      (element) => element.id == questionId,
+    );
 
     if (answerIds == null || answerIds.isEmpty) {
       return false;
     }
 
-    for (int answerId in answerIds) {
-      await client.rpc(
-        'select_answer',
-        params: {'row_id': answerId},
-      ).execute();
+    if (question.is_contextual) {
+      if (question.answers
+          .where(
+            (element) => answerIds.contains(element.id),
+          )
+          .every(
+            (element) => element.is_right == true,
+          )) {
+        await client.rpc('increment_correct_answers',
+            params: {'row_id': questionId}).execute();
+      }
+      await client.rpc('increment_total_answers',
+          params: {'row_id': questionId}).execute();
+    } else {
+      for (int answerId in answerIds) {
+        await client.rpc(
+          'select_answer',
+          params: {'row_id': answerId},
+        ).execute();
+      }
     }
+
     return true;
   }
 
