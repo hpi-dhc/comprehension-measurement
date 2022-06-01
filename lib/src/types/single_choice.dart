@@ -6,31 +6,14 @@ import 'package:flutter/material.dart';
 class SingleChoiceWidget extends StatelessWidget {
   SingleChoiceWidget({
     Key? key,
-    required this.questionId,
+    required this.question,
     required this.model,
-    this.context,
-  }) {
-    question = model.survey!.questions
-        .firstWhere((question) => question.id == questionId);
+    required this.questionId,
+  }) : super(key: key);
 
-    if (question.is_contextual) {
-      assert(
-        question.context != null &&
-            context != null &&
-            context!.keys.contains(question.context) &&
-            context![question.context] != null,
-      );
-      for (Answer answer in question.answers) {
-        answer.is_right =
-            context![question.context]!.contains(answer.answer_text);
-      }
-    }
-  }
-
-  final int questionId;
-  late Question question;
+  final Question question;
   final ComprehensionMeasurementModel model;
-  final Map<String, List<String>>? context;
+  final int questionId;
 
   @override
   Widget build(BuildContext context) {

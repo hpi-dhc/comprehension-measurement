@@ -116,13 +116,11 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     }
 
     if (question.is_contextual) {
-      if (question.answers
-          .where(
-            (element) => answerIds.contains(element.id),
-          )
-          .every(
-            (element) => element.is_right == true,
-          )) {
+      if (question.answers.every(
+        (element) => answerIds.contains(element.id)
+            ? element.is_right!
+            : !element.is_right!,
+      )) {
         await client.rpc('increment_correct_answers',
             params: {'row_id': questionId}).execute();
       }

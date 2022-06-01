@@ -7,12 +7,14 @@ part of 'question.dart';
 // **************************************************************************
 
 Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
-      json['id'] as int,
-      json['title'] as String,
-      $enumDecode(_$QuestionTypeEnumMap, json['type']),
-      (json['answers'] as List<dynamic>)
+      id: json['id'] as int,
+      title: json['title'] as String,
+      type: $enumDecode(_$QuestionTypeEnumMap, json['type']),
+      answers: (json['answers'] as List<dynamic>)
           .map((e) => Answer.fromJson(e as Map<String, dynamic>))
           .toList(),
+      is_contextual: json['is_contextual'] as bool,
+      context: json['context'] as String?,
     );
 
 Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
@@ -20,6 +22,8 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'title': instance.title,
       'type': _$QuestionTypeEnumMap[instance.type],
       'answers': instance.answers,
+      'is_contextual': instance.is_contextual,
+      'context': instance.context,
     };
 
 const _$QuestionTypeEnumMap = {

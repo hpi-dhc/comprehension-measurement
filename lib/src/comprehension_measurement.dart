@@ -2,6 +2,7 @@ import 'package:comprehension_measurement/src/models/comprehension_measurement.d
 import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/types/completion.dart';
 import 'package:comprehension_measurement/src/types/multi_choice.dart';
+import 'package:comprehension_measurement/src/types/choice_question.dart';
 import 'package:comprehension_measurement/src/types/single_choice.dart';
 import 'package:comprehension_measurement/src/types/text_answer.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
@@ -59,29 +60,16 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                     children: [
                       ...value.survey!.questions.map(
                         (question) {
-                          Widget questionWidget;
-
-                          switch (question.type) {
-                            case QuestionType.single_choice:
-                              questionWidget = SingleChoiceWidget(
-                                questionId: question.id,
-                                model: value,
-                                context: questionContext,
-                              );
-                              break;
-                            case QuestionType.multiple_choice:
-                              questionWidget = MultipleChoiceWidget(
-                                questionId: question.id,
-                                model: value,
-                                context: questionContext,
-                              );
-                              break;
-                            case QuestionType.text_answer:
-                              questionWidget = TextAnswerWidget(
-                                questionId: question.id,
-                                model: value,
-                              );
-                              break;
+                          final Widget questionWidget;
+                          if (question.type == QuestionType.text_answer) {
+                            questionWidget = TextAnswerWidget(
+                                questionId: question.id, model: value);
+                          } else {
+                            questionWidget = ChoiceQuestionWidget(
+                              questionId: question.id,
+                              model: value,
+                              questionContext: questionContext,
+                            );
                           }
 
                           return Column(
