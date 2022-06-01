@@ -1,22 +1,22 @@
+import 'package:comprehension_measurement/src/models/answer.dart';
 import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
+import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:flutter/material.dart';
 
 class MultipleChoiceWidget extends StatelessWidget {
   MultipleChoiceWidget({
     Key? key,
-    required this.questionId,
+    required this.question,
     required this.model,
+    required this.questionId,
   }) : super(key: key);
 
-  final int questionId;
+  final Question question;
   final ComprehensionMeasurementModel model;
+  final int questionId;
 
   @override
   Widget build(BuildContext context) {
-    final question = model.survey!.questions
-        .where((question) => question.id == questionId)
-        .first;
-
     if (model.multipleChoiceAnswers[questionId] == null) {
       model.multipleChoiceAnswers[questionId] = {};
     }

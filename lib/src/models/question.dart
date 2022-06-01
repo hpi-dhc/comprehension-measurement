@@ -12,12 +12,21 @@ enum QuestionType {
 
 @JsonSerializable()
 class Question {
-  Question(this.id, this.title, this.type, this.answers);
+  Question({
+    required this.id,
+    required this.title,
+    required this.type,
+    required this.answers,
+    required this.is_contextual,
+    this.context,
+  });
 
   int id;
   String title;
   QuestionType type;
   List<Answer> answers;
+  bool is_contextual;
+  String? context;
 
   factory Question.fromJson(Map<String, dynamic> json) =>
       _$QuestionFromJson(json);

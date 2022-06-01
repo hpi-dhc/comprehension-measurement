@@ -1,4 +1,6 @@
 import 'package:comprehension_measurement/src/constants.dart';
+import 'package:comprehension_measurement/src/models/answer.dart';
+import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/models/survey.dart';
 import 'package:flutter/foundation.dart';
 import 'package:supabase/supabase.dart';
@@ -86,32 +88,67 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
   Future<bool> saveSingleChoiceAnswer(questionId) async {
     final answerId = singleChoiceAnswers[questionId];
+    final Question question = survey!.questions.firstWhere(
+      (element) => element.id == questionId,
+    );
 
     if (answerId == null) {
       return false;
     }
 
-    await client.rpc(
-      'select_answer',
-      params: {'row_id': answerId},
-    ).execute();
+    if (!question.is_contextual) {
+      await client.rpc(
+        'select_answer',
+        params: {'row_id': answerId},
+      ).execute();
+    }
+
+    if (question.answers
+            .firstWhere(
+              (element) => element.id == answerId,
+            )
+            .is_right ??
+        false) {
+      await client.rpc('increment_correct_answers',
+          params: {'row_id': questionId}).execute();
+    }
+    await client.rpc('increment_total_answers',
+        params: {'row_id': questionId}).execute();
 
     return true;
   }
 
   Future<bool> saveMultipleChoiceAnswer(int questionId) async {
     final answerIds = multipleChoiceAnswers[questionId];
+    final Question question = survey!.questions.firstWhere(
+      (element) => element.id == questionId,
+    );
 
     if (answerIds == null || answerIds.isEmpty) {
       return false;
     }
 
-    for (int answerId in answerIds) {
-      await client.rpc(
-        'select_answer',
-        params: {'row_id': answerId},
-      ).execute();
+    if (!question.is_contextual) {
+      for (int answerId in answerIds) {
+        await client.rpc(
+          'select_answer',
+          params: {'row_id': answerId},
+        ).execute();
+      }
     }
+
+    if (question.answers.every(
+      (element) => answerIds.contains(element.id)
+          ? element.is_right ?? false
+          : !(element.is_right ?? true),
+    )) {
+      await client.rpc('increment_correct_answers',
+          params: {'row_id': questionId}).execute();
+    }
+
+    await client.rpc('increment_total_answers',
+        params: {'row_id': questionId}).execute();
+
     return true;
   }
 
@@ -127,6 +164,9 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
         'question_id': questionId,
       },
     ]).execute();
+
+    await client.rpc('increment_total_answers',
+        params: {'row_id': questionId}).execute();
 
     return true;
   }

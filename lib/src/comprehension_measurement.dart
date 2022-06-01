@@ -3,6 +3,7 @@ import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/types/completion.dart';
 import 'package:comprehension_measurement/src/types/intro.dart';
 import 'package:comprehension_measurement/src/types/multi_choice.dart';
+import 'package:comprehension_measurement/src/types/choice_question.dart';
 import 'package:comprehension_measurement/src/types/single_choice.dart';
 import 'package:comprehension_measurement/src/types/text_answer.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
@@ -10,17 +11,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ComprehensionMeasurementWidget extends StatelessWidget {
-  ComprehensionMeasurementWidget({
-    Key? key,
-    required this.introText,
-    required this.surveyButtonText,
-    required this.feedbackButtonText,
-  }) : super(key: key);
+  ComprehensionMeasurementWidget(
+      {Key? key,
+      required this.introText,
+      required this.surveyButtonText,
+      required this.feedbackButtonText,
+      required this.questionContext})
+      : super(key: key);
 
   final String introText;
   final String surveyButtonText;
   final String feedbackButtonText;
   final PageController controller = PageController();
+  final Map<String, List<String>> questionContext;
 
   void continueSurvey() {
     controller.nextPage(
@@ -41,12 +44,14 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
             switch (question.type) {
               case QuestionType.single_choice:
                 questionWidget = SingleChoiceWidget(
+                  question: question,
                   questionId: question.id,
                   model: value,
                 );
                 break;
               case QuestionType.multiple_choice:
                 questionWidget = MultipleChoiceWidget(
+                  question: question,
                   questionId: question.id,
                   model: value,
                 );

@@ -8,6 +8,7 @@ Future<void> measureComprehension({
   required int surveyId,
   required String introText,
   required String surveyButtonText,
+  required Map<String, List<String>> questionContext,
   int? feedbackId,
   String feedbackButtonText = 'Close',
 }) async {
@@ -24,6 +25,7 @@ Future<void> measureComprehension({
           introText: introText,
           surveyButtonText: surveyButtonText,
           feedbackButtonText: feedbackButtonText,
+          questionContext: questionContext,
         ),
       );
     },
