@@ -93,14 +93,14 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
         await client.rpc('increment_correct_answers',
             params: {'row_id': questionId}).execute();
       }
-      await client.rpc('increment_total_answers',
-          params: {'row_id': questionId}).execute();
     } else {
       await client.rpc(
         'select_answer',
         params: {'row_id': answerId},
       ).execute();
     }
+    await client.rpc('increment_total_answers',
+        params: {'row_id': questionId}).execute();
 
     return true;
   }
@@ -124,8 +124,6 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
         await client.rpc('increment_correct_answers',
             params: {'row_id': questionId}).execute();
       }
-      await client.rpc('increment_total_answers',
-          params: {'row_id': questionId}).execute();
     } else {
       for (int answerId in answerIds) {
         await client.rpc(
@@ -134,6 +132,9 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
         ).execute();
       }
     }
+
+    await client.rpc('increment_total_answers',
+        params: {'row_id': questionId}).execute();
 
     return true;
   }
@@ -150,6 +151,9 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
         'question_id': questionId,
       },
     ]).execute();
+
+    await client.rpc('increment_total_answers',
+        params: {'row_id': questionId}).execute();
 
     return true;
   }
