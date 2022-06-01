@@ -5,6 +5,8 @@ import 'package:supabase/supabase.dart';
 
 class ComprehensionMeasurementModel extends ChangeNotifier {
   Survey? survey;
+  late int surveyId;
+  late int feedbackId;
 
   Map<int, int> singleChoiceAnswers = {};
   Map<int, Set<int>> multipleChoiceAnswers = {};
@@ -16,26 +18,33 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   );
 
   static Future<ComprehensionMeasurementModel> fromSurveyId(
-      int surveyId) async {
+      int surveyId, int? feedbackId) async {
     final model = ComprehensionMeasurementModel();
+
+    model.surveyId = surveyId;
+    model.feedbackId = feedbackId ?? 0;
 
     model.client = SupabaseClient(
       supabaseUrl,
       supabaseKey,
     );
 
+    return model;
+  }
+
+  Future<void> loadQuestions(int id) async {
     // syntax is equivalent to https://postgrest.org/en/stable/api.html
 
-    final response = await model.client
+    final response = await client
         .from('surveys')
         .select('*,questions(*),questions(*,answers(*))')
-        .eq('id', surveyId)
+        .eq('id', id)
         .single()
         .execute();
 
-    model.survey = Survey.fromJson(response.data);
+    survey = Survey.fromJson(response.data);
 
-    return model;
+    notifyListeners();
   }
 
   void changeSingleChoiceAnswer(int questionId, int? answerId) async {

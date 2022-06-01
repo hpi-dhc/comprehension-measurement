@@ -3,8 +3,16 @@ import 'package:comprehension_measurement/src/models/comprehension_measurement.d
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Future<void> measureComprehension(BuildContext context, int surveyId) async {
-  final model = await ComprehensionMeasurementModel.fromSurveyId(surveyId);
+Future<void> measureComprehension({
+  required BuildContext context,
+  required int surveyId,
+  required String introText,
+  required String surveyButtonText,
+  int feedbackId = 0,
+  String feedbackButtonText = 'Close',
+}) async {
+  final model =
+      await ComprehensionMeasurementModel.fromSurveyId(surveyId, feedbackId);
 
   showBottomSheet(
     context: context,
@@ -12,7 +20,11 @@ Future<void> measureComprehension(BuildContext context, int surveyId) async {
     builder: (BuildContext context) {
       return ChangeNotifierProvider.value(
         value: model,
-        child: const ComprehensionMeasurementWidget(),
+        child: ComprehensionMeasurementWidget(
+          introText: introText,
+          surveyButtonText: surveyButtonText,
+          feedbackButtonText: feedbackButtonText,
+        ),
       );
     },
   );
