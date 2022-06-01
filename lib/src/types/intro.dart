@@ -8,14 +8,14 @@ class IntroWidget extends StatelessWidget {
     required this.surveyButtonText,
     required this.feedbackButtonText,
     required this.model,
-    required this.callback,
+    required this.onQuestionsLoaded,
   }) : super(key: key);
 
   final String text;
   final ComprehensionMeasurementModel model;
   final String surveyButtonText;
   final String feedbackButtonText;
-  final Function() callback;
+  final Function() onQuestionsLoaded;
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +36,18 @@ class IntroWidget extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   await model.loadSurvey();
-                  callback();
+                  onQuestionsLoaded();
                 },
                 child: Text(surveyButtonText),
               ),
               ElevatedButton(
                 onPressed: () async {
-                  await model.loadFeedback();
-                  callback();
+                  if (model.feedbackId == null) {
+                    Navigator.pop(context);
+                  } else {
+                    await model.loadFeedback();
+                    onQuestionsLoaded();
+                  }
                 },
                 child: Text(feedbackButtonText),
               )

@@ -11,17 +11,15 @@ Future<void> measureComprehension({
   int? feedbackId,
   String feedbackButtonText = 'Close',
 }) async {
-  final model = ComprehensionMeasurementModel(
-    surveyId: surveyId,
-    feedbackId: feedbackId,
-  );
-
   showBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
     builder: (BuildContext context) {
-      return ChangeNotifierProvider.value(
-        value: model,
+      return ChangeNotifierProvider(
+        create: (context) => ComprehensionMeasurementModel(
+          surveyId: surveyId,
+          feedbackId: feedbackId,
+        ),
         child: ComprehensionMeasurementWidget(
           introText: introText,
           surveyButtonText: surveyButtonText,

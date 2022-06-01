@@ -172,7 +172,7 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                         surveyButtonText: surveyButtonText,
                         feedbackButtonText: feedbackButtonText,
                         model: value,
-                        callback: continueSurvey,
+                        onQuestionsLoaded: continueSurvey,
                       ),
                       ...buildQuestionWidgets(
                           controller, context, value, theme),
