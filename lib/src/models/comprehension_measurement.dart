@@ -6,7 +6,15 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase/supabase.dart';
 
 class ComprehensionMeasurementModel extends ChangeNotifier {
+  ComprehensionMeasurementModel({
+    Key? key,
+    required this.surveyId,
+    this.feedbackId,
+  });
+
   Survey? survey;
+  final int surveyId;
+  final int? feedbackId;
 
   Map<int, int> singleChoiceAnswers = {};
   Map<int, Set<int>> multipleChoiceAnswers = {};
@@ -17,27 +25,31 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     supabaseKey,
   );
 
-  static Future<ComprehensionMeasurementModel> fromSurveyId(
-      int surveyId) async {
-    final model = ComprehensionMeasurementModel();
+  Future<void> loadSurvey() async {
+    await _loadQuestions(surveyId);
+  }
 
-    model.client = SupabaseClient(
-      supabaseUrl,
-      supabaseKey,
-    );
+  Future<void> loadFeedback() async {
+    await _loadQuestions(feedbackId);
+  }
 
+  Future<void> _loadQuestions(int? id) async {
     // syntax is equivalent to https://postgrest.org/en/stable/api.html
 
-    final response = await model.client
+    if (id == null) {
+      return;
+    }
+
+    final response = await client
         .from('surveys')
         .select('*,questions(*),questions(*,answers(*))')
-        .eq('id', surveyId)
+        .eq('id', id)
         .single()
         .execute();
 
-    model.survey = Survey.fromJson(response.data);
+    survey = Survey.fromJson(response.data);
 
-    return model;
+    notifyListeners();
   }
 
   void changeSingleChoiceAnswer(int questionId, int? answerId) async {
