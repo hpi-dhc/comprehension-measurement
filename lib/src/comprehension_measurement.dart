@@ -16,14 +16,14 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
       required this.introText,
       required this.surveyButtonText,
       required this.feedbackButtonText,
-      required this.questionContext})
+      this.questionContext})
       : super(key: key);
 
   final String introText;
   final String surveyButtonText;
   final String feedbackButtonText;
   final PageController controller = PageController();
-  final Map<String, List<String>> questionContext;
+  final Map<String, List<String>>? questionContext;
 
   void continueSurvey() {
     controller.nextPage(

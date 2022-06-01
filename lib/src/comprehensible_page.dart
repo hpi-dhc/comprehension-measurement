@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:comprehension_measurement/comprehension_measurement.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +9,14 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
     Key? key,
     this.comprehensionContext,
     required this.surveyId,
+    this.feedbackId,
+    this.introText = 'Was the last page understandable for you?',
+    this.surveyButtonText = 'Yes',
+    this.feedbackButtonText = 'Close',
+    this.questionContext,
     this.tab = false,
     this.didOpenTab,
+    this.probability = 0.5,
   }) : super(key: key);
 
   @protected
@@ -16,8 +24,14 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
 
   final BuildContext? comprehensionContext;
   final int surveyId;
+  final int? feedbackId;
+  final String introText;
+  final String surveyButtonText;
+  final String feedbackButtonText;
+  final Map<String, List<String>>? questionContext;
   final bool tab;
   final Function? didOpenTab;
+  final double probability;
 
   @override
   State<AutoComprehensiblePage> createState() => _AutoComprehensiblePageState();
@@ -48,15 +62,30 @@ class _AutoComprehensiblePageState extends State<AutoComprehensiblePage>
 
   @override
   void didPushNext() {
-    measureComprehension(
-        widget.comprehensionContext ?? context, widget.surveyId);
+    _measureComprehensionWithProbability();
     super.didPushNext();
   }
 
   @override
   void didPop() {
-    measureComprehension(
-        widget.comprehensionContext ?? context, widget.surveyId);
+    _measureComprehensionWithProbability();
     super.didPop();
+  }
+
+  void _measureComprehensionWithProbability() {
+    Random random = Random();
+    double randomDouble = random.nextDouble();
+
+    if (randomDouble <= widget.probability) {
+      measureComprehension(
+        context: widget.comprehensionContext ?? context,
+        surveyId: widget.surveyId,
+        feedbackId: widget.feedbackId,
+        introText: widget.introText,
+        surveyButtonText: widget.surveyButtonText,
+        feedbackButtonText: widget.feedbackButtonText,
+        questionContext: widget.questionContext,
+      );
+    }
   }
 }
