@@ -41,27 +41,17 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
           (question) {
             Widget questionWidget;
 
-            switch (question.type) {
-              case QuestionType.single_choice:
-                questionWidget = SingleChoiceWidget(
-                  question: question,
-                  questionId: question.id,
-                  model: value,
-                );
-                break;
-              case QuestionType.multiple_choice:
-                questionWidget = MultipleChoiceWidget(
-                  question: question,
-                  questionId: question.id,
-                  model: value,
-                );
-                break;
-              case QuestionType.text_answer:
-                questionWidget = TextAnswerWidget(
-                  questionId: question.id,
-                  model: value,
-                );
-                break;
+            if (question.type == QuestionType.text_answer) {
+              questionWidget = TextAnswerWidget(
+                questionId: question.id,
+                model: value,
+              );
+            } else {
+              questionWidget = ChoiceQuestionWidget(
+                questionId: question.id,
+                model: value,
+                questionContext: questionContext,
+              );
             }
 
             return Column(
