@@ -84,20 +84,21 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       return false;
     }
 
-    if (question.is_contextual) {
-      if (question.answers
-          .firstWhere(
-            (element) => element.id == answerId,
-          )
-          .is_right!) {
-        await client.rpc('increment_correct_answers',
-            params: {'row_id': questionId}).execute();
-      }
-    } else {
+    if (!question.is_contextual) {
       await client.rpc(
         'select_answer',
         params: {'row_id': answerId},
       ).execute();
+    }
+
+    if (question.answers
+            .firstWhere(
+              (element) => element.id == answerId,
+            )
+            .is_right ??
+        false) {
+      await client.rpc('increment_correct_answers',
+          params: {'row_id': questionId}).execute();
     }
     await client.rpc('increment_total_answers',
         params: {'row_id': questionId}).execute();
@@ -115,22 +116,22 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       return false;
     }
 
-    if (question.is_contextual) {
-      if (question.answers.every(
-        (element) => answerIds.contains(element.id)
-            ? element.is_right!
-            : !element.is_right!,
-      )) {
-        await client.rpc('increment_correct_answers',
-            params: {'row_id': questionId}).execute();
-      }
-    } else {
+    if (!question.is_contextual) {
       for (int answerId in answerIds) {
         await client.rpc(
           'select_answer',
           params: {'row_id': answerId},
         ).execute();
       }
+    }
+
+    if (question.answers.every(
+      (element) => answerIds.contains(element.id)
+          ? element.is_right ?? false
+          : !(element.is_right ?? true),
+    )) {
+      await client.rpc('increment_correct_answers',
+          params: {'row_id': questionId}).execute();
     }
 
     await client.rpc('increment_total_answers',
