@@ -8,11 +8,13 @@ Future<void> measureComprehension({
   required int surveyId,
   required String introText,
   required String surveyButtonText,
-  int feedbackId = 0,
+  int? feedbackId,
   String feedbackButtonText = 'Close',
 }) async {
-  final model =
-      await ComprehensionMeasurementModel.fromSurveyId(surveyId, feedbackId);
+  final model = ComprehensionMeasurementModel(
+    surveyId: surveyId,
+    feedbackId: feedbackId,
+  );
 
   showBottomSheet(
     context: context,

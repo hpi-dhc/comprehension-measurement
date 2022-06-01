@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ComprehensionMeasurementWidget extends StatelessWidget {
-  const ComprehensionMeasurementWidget({
+  ComprehensionMeasurementWidget({
     Key? key,
     required this.introText,
     required this.surveyButtonText,
@@ -20,6 +20,14 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
   final String introText;
   final String surveyButtonText;
   final String feedbackButtonText;
+  final PageController controller = PageController();
+
+  void continueSurvey() {
+    controller.nextPage(
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
 
   List<Widget> buildQuestionWidgets(
       PageController controller,
@@ -103,10 +111,7 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                             break;
                         }
                         if (shouldSend) {
-                          controller.nextPage(
-                            duration: const Duration(milliseconds: 400),
-                            curve: Curves.easeInOut,
-                          );
+                          continueSurvey();
                         }
                       },
                       child: const Text('Send'),
@@ -123,7 +128,6 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final PageController controller = PageController();
 
     return Container(
       margin: const EdgeInsets.all(8),
@@ -167,8 +171,8 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                         text: introText,
                         surveyButtonText: surveyButtonText,
                         feedbackButtonText: feedbackButtonText,
-                        controller: controller,
                         model: value,
+                        callback: continueSurvey,
                       ),
                       ...buildQuestionWidgets(
                           controller, context, value, theme),

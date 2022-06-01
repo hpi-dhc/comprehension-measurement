@@ -7,15 +7,15 @@ class IntroWidget extends StatelessWidget {
     required this.text,
     required this.surveyButtonText,
     required this.feedbackButtonText,
-    required this.controller,
     required this.model,
+    required this.callback,
   }) : super(key: key);
 
   final String text;
-  final PageController controller;
   final ComprehensionMeasurementModel model;
   final String surveyButtonText;
   final String feedbackButtonText;
+  final Function() callback;
 
   @override
   Widget build(BuildContext context) {
@@ -35,25 +35,15 @@ class IntroWidget extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () async {
-                  await model.loadQuestions(model.surveyId);
-                  controller.nextPage(
-                    duration: const Duration(milliseconds: 400),
-                    curve: Curves.easeInOut,
-                  );
+                  await model.loadSurvey();
+                  callback();
                 },
                 child: Text(surveyButtonText),
               ),
               ElevatedButton(
                 onPressed: () async {
-                  if (model.feedbackId == 0) {
-                    Navigator.pop(context);
-                  } else {
-                    await model.loadQuestions(model.feedbackId);
-                    controller.nextPage(
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeInOut,
-                    );
-                  }
+                  await model.loadFeedback();
+                  callback();
                 },
                 child: Text(feedbackButtonText),
               )

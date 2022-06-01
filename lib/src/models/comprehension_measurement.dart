@@ -4,9 +4,15 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase/supabase.dart';
 
 class ComprehensionMeasurementModel extends ChangeNotifier {
+  ComprehensionMeasurementModel({
+    Key? key,
+    required this.surveyId,
+    this.feedbackId,
+  });
+
   Survey? survey;
-  late int surveyId;
-  late int feedbackId;
+  final int surveyId;
+  final int? feedbackId;
 
   Map<int, int> singleChoiceAnswers = {};
   Map<int, Set<int>> multipleChoiceAnswers = {};
@@ -17,23 +23,20 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     supabaseKey,
   );
 
-  static Future<ComprehensionMeasurementModel> fromSurveyId(
-      int surveyId, int? feedbackId) async {
-    final model = ComprehensionMeasurementModel();
-
-    model.surveyId = surveyId;
-    model.feedbackId = feedbackId ?? 0;
-
-    model.client = SupabaseClient(
-      supabaseUrl,
-      supabaseKey,
-    );
-
-    return model;
+  Future<void> loadSurvey() async {
+    await _loadQuestions(surveyId);
   }
 
-  Future<void> loadQuestions(int id) async {
+  Future<void> loadFeedback() async {
+    await _loadQuestions(feedbackId);
+  }
+
+  Future<void> _loadQuestions(int? id) async {
     // syntax is equivalent to https://postgrest.org/en/stable/api.html
+
+    if (id == null) {
+      return;
+    }
 
     final response = await client
         .from('surveys')
