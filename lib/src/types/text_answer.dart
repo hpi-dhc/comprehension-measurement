@@ -2,7 +2,7 @@ import 'package:comprehension_measurement/src/models/comprehension_measurement.d
 import 'package:flutter/material.dart';
 
 class TextAnswerWidget extends StatelessWidget {
-  TextAnswerWidget({
+  const TextAnswerWidget({
     Key? key,
     required this.questionId,
     required this.model,

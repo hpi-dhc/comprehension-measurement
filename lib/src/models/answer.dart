@@ -6,15 +6,20 @@ part 'answer.g.dart';
 class Answer {
   Answer(
     this.id,
-    this.is_right,
-    this.answer_text,
-    this.times_selected,
+    this.isRight,
+    this.answerText,
+    this.timesSelected,
   );
 
   int id;
-  bool? is_right;
-  String answer_text;
-  int times_selected;
+  @JsonKey(name: 'is_right')
+  bool? isRight;
+
+  @JsonKey(name: 'answer_text')
+  String answerText;
+
+  @JsonKey(name: 'times_selected')
+  int timesSelected;
 
   factory Answer.fromJson(Map<String, dynamic> json) => _$AnswerFromJson(json);
   Map<String, dynamic> toJson() => _$AnswerToJson(this);

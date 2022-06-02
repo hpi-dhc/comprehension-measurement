@@ -15,7 +15,7 @@ Answer _$AnswerFromJson(Map<String, dynamic> json) => Answer(
 
 Map<String, dynamic> _$AnswerToJson(Answer instance) => <String, dynamic>{
       'id': instance.id,
-      'is_right': instance.is_right,
-      'answer_text': instance.answer_text,
-      'times_selected': instance.times_selected,
+      'is_right': instance.isRight,
+      'answer_text': instance.answerText,
+      'times_selected': instance.timesSelected,
     };
