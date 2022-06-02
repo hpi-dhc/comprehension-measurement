@@ -10,7 +10,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     required this.surveyId,
     required this.questionContext,
     this.feedbackId,
-    this.surveyLength = 3,
+    this.surveyLength = 4,
   });
 
   Survey? survey;

@@ -27,7 +27,7 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
     };
 
 const _$QuestionTypeEnumMap = {
-  QuestionType.singleChoice: 'singleChoice',
-  QuestionType.multipleChoice: 'multipleChoice',
-  QuestionType.textAnswer: 'textAnswer',
+  QuestionType.singleChoice: 'single_choice',
+  QuestionType.multipleChoice: 'multiple_choice',
+  QuestionType.textAnswer: 'text_answer',
 };

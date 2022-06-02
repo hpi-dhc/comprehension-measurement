@@ -5,8 +5,11 @@ import 'answer.dart';
 part 'question.g.dart';
 
 enum QuestionType {
+  @JsonValue('single_choice')
   singleChoice,
+  @JsonValue('multiple_choice')
   multipleChoice,
+  @JsonValue('text_answer')
   textAnswer,
 }
 
