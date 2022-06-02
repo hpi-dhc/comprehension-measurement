@@ -16,7 +16,7 @@ class QuestionDataAdapter extends TypeAdapter<QuestionData> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return QuestionData()..questionIds = (fields[0] as List?)?.cast<int>();
+    return QuestionData()..questionIds = (fields[0] as List).cast<int>();
   }
 
   @override

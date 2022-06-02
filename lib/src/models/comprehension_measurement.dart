@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:comprehension_measurement/src/constants.dart';
 import 'package:comprehension_measurement/src/models/answer.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
+import 'package:comprehension_measurement/src/models/questiondata.dart';
 import 'package:comprehension_measurement/src/models/survey.dart';
 import 'package:flutter/foundation.dart';
 import 'package:supabase/supabase.dart';
@@ -42,8 +41,9 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   void filterQuestions() {
     survey!.questions.removeWhere(
       (question) =>
-          question.isContextual &&
-          !questionContext.containsKey(question.context),
+          (question.isContextual &&
+              !questionContext.containsKey(question.context)) ||
+          QuestionData.instance.questionIds.contains(question.id),
     );
   }
 
@@ -58,11 +58,13 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     }
   }
 
-  //TODO: check if questions were already asked here
-
   void selectQuestions() {
     survey!.questions.shuffle();
     survey!.questions = survey!.questions.take(surveyLength).toList();
+
+    for (Question question in survey!.questions) {
+      QuestionData.instance.questionIds.add(question.id);
+    }
   }
 
   Future<void> _loadQuestions(int? id) async {

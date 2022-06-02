@@ -17,7 +17,7 @@ Future<void> measureComprehension({
 }) async {
   await Hive.initFlutter();
 
-  initQuestionData();
+  await initQuestionData();
 
   showBottomSheet(
     context: context,

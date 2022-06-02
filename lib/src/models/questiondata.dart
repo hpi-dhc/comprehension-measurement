@@ -19,7 +19,7 @@ class QuestionData {
       Hive.box<QuestionData>(_boxName).put('data', _instance);
 
   @HiveField(0)
-  List<int>? questionIds;
+  List<int> questionIds = [];
 }
 
 Future<void> initQuestionData() async {
