@@ -1,3 +1,4 @@
+import 'package:comprehension_measurement/src/models/questiondata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -17,7 +18,10 @@ class CompletionWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: ElevatedButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () async {
+                await QuestionData.save();
+                Navigator.pop(context);
+              },
               child: const Text('Complete'),
             ),
           ),
