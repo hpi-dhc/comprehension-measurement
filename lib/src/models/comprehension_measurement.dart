@@ -61,17 +61,8 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   //TODO: check if questions were already asked here
 
   void selectQuestions() {
-    List<Question> selectedQuestions = [];
-
-    final random = Random();
-
-    for (int i = 0; i < surveyLength; i++) {
-      Question question =
-          survey!.questions[random.nextInt(survey!.questions.length - 1)];
-      selectedQuestions.add(question);
-    }
-
-    survey!.questions = selectedQuestions;
+    survey!.questions.shuffle();
+    survey!.questions = survey!.questions.take(surveyLength).toList();
   }
 
   Future<void> _loadQuestions(int? id) async {
