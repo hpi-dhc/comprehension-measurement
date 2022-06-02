@@ -2,28 +2,26 @@ import 'package:comprehension_measurement/src/models/comprehension_measurement.d
 import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/types/completion.dart';
 import 'package:comprehension_measurement/src/types/intro.dart';
-import 'package:comprehension_measurement/src/types/multi_choice.dart';
 import 'package:comprehension_measurement/src/types/choice_question.dart';
-import 'package:comprehension_measurement/src/types/single_choice.dart';
 import 'package:comprehension_measurement/src/types/text_answer.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ComprehensionMeasurementWidget extends StatelessWidget {
-  ComprehensionMeasurementWidget(
-      {Key? key,
-      required this.introText,
-      required this.surveyButtonText,
-      required this.feedbackButtonText,
-      this.questionContext})
-      : super(key: key);
+  ComprehensionMeasurementWidget({
+    Key? key,
+    required this.introText,
+    required this.surveyButtonText,
+    required this.feedbackButtonText,
+    required this.questionContext,
+  }) : super(key: key);
 
   final String introText;
   final String surveyButtonText;
   final String feedbackButtonText;
   final PageController controller = PageController();
-  final Map<String, List<String>>? questionContext;
+  final Map<String, List<String>> questionContext;
 
   void continueSurvey() {
     controller.nextPage(
@@ -41,7 +39,7 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
           (question) {
             Widget questionWidget;
 
-            if (question.type == QuestionType.text_answer) {
+            if (question.type == QuestionType.textAnswer) {
               questionWidget = TextAnswerWidget(
                 questionId: question.id,
                 model: value,
@@ -50,7 +48,6 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
               questionWidget = ChoiceQuestionWidget(
                 questionId: question.id,
                 model: value,
-                questionContext: questionContext,
               );
             }
 
@@ -89,17 +86,17 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                       onPressed: () async {
                         bool shouldSend = false;
                         switch (question.type) {
-                          case QuestionType.single_choice:
+                          case QuestionType.singleChoice:
                             shouldSend = await value.saveSingleChoiceAnswer(
                               question.id,
                             );
                             break;
-                          case QuestionType.multiple_choice:
+                          case QuestionType.multipleChoice:
                             shouldSend = await value.saveMultipleChoiceAnswer(
                               question.id,
                             );
                             break;
-                          case QuestionType.text_answer:
+                          case QuestionType.textAnswer:
                             shouldSend = await value.saveTextAnswer(
                               question.id,
                             );

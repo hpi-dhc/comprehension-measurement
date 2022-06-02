@@ -1,4 +1,3 @@
-import 'package:comprehension_measurement/src/models/answer.dart';
 import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/types/multi_choice.dart';
@@ -10,39 +9,29 @@ class ChoiceQuestionWidget extends StatelessWidget {
     Key? key,
     required this.questionId,
     required this.model,
-    this.questionContext,
-  }) {
+  }) : super(key: key) {
     question = model.survey!.questions
         .firstWhere((question) => question.id == questionId);
 
-    if (question.is_contextual) {
-      for (Answer answer in question.answers) {
-        answer.is_right =
-            questionContext![question.context]!.contains(answer.answer_text);
-      }
-    }
     switch (question.type) {
-      case QuestionType.single_choice:
+      case QuestionType.singleChoice:
         child = SingleChoiceWidget(
           question: question,
           model: model,
-          questionId: questionId,
         );
         break;
-      case QuestionType.multiple_choice:
+      case QuestionType.multipleChoice:
         child = MultipleChoiceWidget(
           question: question,
           model: model,
-          questionId: questionId,
         );
         break;
     }
   }
 
   final int questionId;
-  late Question question;
+  late final Question question;
   final ComprehensionMeasurementModel model;
-  final Map<String, List<String>>? questionContext;
   late final Widget child;
 
   @override

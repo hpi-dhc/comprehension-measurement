@@ -1,7 +1,5 @@
 import 'package:comprehension_measurement/src/models/questiondata.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class CompletionWidget extends StatelessWidget {
   const CompletionWidget({Key? key}) : super(key: key);

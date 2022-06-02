@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:comprehension_measurement/src/constants.dart';
 import 'package:comprehension_measurement/src/models/answer.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
@@ -9,16 +11,20 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   ComprehensionMeasurementModel({
     Key? key,
     required this.surveyId,
+    required this.questionContext,
     this.feedbackId,
+    this.surveyLength = 4,
   });
 
   Survey? survey;
   final int surveyId;
   final int? feedbackId;
+  final int surveyLength;
 
   Map<int, int> singleChoiceAnswers = {};
   Map<int, Set<int>> multipleChoiceAnswers = {};
   Map<int, String> textAnswers = {};
+  final Map<String, List<String>> questionContext;
 
   var client = SupabaseClient(
     supabaseUrl,
@@ -31,6 +37,32 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
   Future<void> loadFeedback() async {
     await _loadQuestions(feedbackId);
+  }
+
+  void filterQuestions() {
+    survey!.questions.removeWhere(
+      (question) =>
+          question.isContextual &&
+          !questionContext.containsKey(question.context),
+    );
+  }
+
+  void evaluateQuestions() {
+    for (Question question in survey!.questions) {
+      if (question.isContextual) {
+        for (Answer answer in question.answers) {
+          answer.isRight =
+              questionContext[question.context]!.contains(answer.answerText);
+        }
+      }
+    }
+  }
+
+  //TODO: check if questions were already asked here
+
+  void selectQuestions() {
+    survey!.questions.shuffle();
+    survey!.questions = survey!.questions.take(surveyLength).toList();
   }
 
   Future<void> _loadQuestions(int? id) async {
@@ -48,6 +80,12 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
         .execute();
 
     survey = Survey.fromJson(response.data);
+
+    assert(survey != null);
+
+    filterQuestions();
+    evaluateQuestions();
+    selectQuestions();
 
     notifyListeners();
   }
@@ -96,7 +134,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       return false;
     }
 
-    if (!question.is_contextual) {
+    if (!question.isContextual) {
       await client.rpc(
         'select_answer',
         params: {'row_id': answerId},
@@ -107,7 +145,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
             .firstWhere(
               (element) => element.id == answerId,
             )
-            .is_right ??
+            .isRight ??
         false) {
       await client.rpc('increment_correct_answers',
           params: {'row_id': questionId}).execute();
@@ -128,7 +166,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       return false;
     }
 
-    if (!question.is_contextual) {
+    if (!question.isContextual) {
       for (int answerId in answerIds) {
         await client.rpc(
           'select_answer',
@@ -139,8 +177,8 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
     if (question.answers.every(
       (element) => answerIds.contains(element.id)
-          ? element.is_right ?? false
-          : !(element.is_right ?? true),
+          ? element.isRight ?? false
+          : !(element.isRight ?? true),
     )) {
       await client.rpc('increment_correct_answers',
           params: {'row_id': questionId}).execute();
@@ -160,7 +198,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     }
     await client.from('text_answers').insert([
       {
-        'answer_text': answerText,
+        'answerText': answerText,
         'question_id': questionId,
       },
     ]).execute();

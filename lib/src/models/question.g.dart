@@ -13,7 +13,7 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
       answers: (json['answers'] as List<dynamic>)
           .map((e) => Answer.fromJson(e as Map<String, dynamic>))
           .toList(),
-      is_contextual: json['is_contextual'] as bool,
+      isContextual: json['is_contextual'] as bool,
       context: json['context'] as String?,
     );
 
@@ -22,12 +22,12 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'title': instance.title,
       'type': _$QuestionTypeEnumMap[instance.type],
       'answers': instance.answers,
-      'is_contextual': instance.is_contextual,
+      'is_contextual': instance.isContextual,
       'context': instance.context,
     };
 
 const _$QuestionTypeEnumMap = {
-  QuestionType.single_choice: 'single_choice',
-  QuestionType.multiple_choice: 'multiple_choice',
-  QuestionType.text_answer: 'text_answer',
+  QuestionType.singleChoice: 'single_choice',
+  QuestionType.multipleChoice: 'multiple_choice',
+  QuestionType.textAnswer: 'text_answer',
 };
