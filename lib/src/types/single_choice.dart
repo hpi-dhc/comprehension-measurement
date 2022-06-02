@@ -1,19 +1,16 @@
-import 'package:comprehension_measurement/src/models/answer.dart';
 import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:flutter/material.dart';
 
 class SingleChoiceWidget extends StatelessWidget {
-  SingleChoiceWidget({
+  const SingleChoiceWidget({
     Key? key,
     required this.question,
     required this.model,
-    required this.questionId,
   }) : super(key: key);
 
   final Question question;
   final ComprehensionMeasurementModel model;
-  final int questionId;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +18,11 @@ class SingleChoiceWidget extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return RadioListTile(
-            title: Text(question.answers[index].answer_text),
+            title: Text(question.answers[index].answerText),
             value: question.answers[index].id,
-            groupValue: model.singleChoiceAnswers[questionId],
+            groupValue: model.singleChoiceAnswers[question.id],
             onChanged: (int? value) {
-              model.changeSingleChoiceAnswer(questionId, value);
+              model.changeSingleChoiceAnswer(question.id, value);
             },
           );
         },

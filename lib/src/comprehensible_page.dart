@@ -13,7 +13,7 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
     this.introText = 'Was the last page understandable for you?',
     this.surveyButtonText = 'Yes',
     this.feedbackButtonText = 'Close',
-    this.questionContext,
+    this.questionContext = const {},
     this.tab = false,
     this.didOpenTab,
     this.probability = 0.5,
@@ -28,7 +28,7 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
   final String introText;
   final String surveyButtonText;
   final String feedbackButtonText;
-  final Map<String, List<String>>? questionContext;
+  final Map<String, List<String>> questionContext;
   final bool tab;
   final Function? didOpenTab;
   final double probability;

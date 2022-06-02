@@ -5,9 +5,12 @@ import 'answer.dart';
 part 'question.g.dart';
 
 enum QuestionType {
-  single_choice,
-  multiple_choice,
-  text_answer,
+  @JsonValue('single_choice')
+  singleChoice,
+  @JsonValue('multiple_choice')
+  multipleChoice,
+  @JsonValue('text_answer')
+  textAnswer,
 }
 
 @JsonSerializable()
@@ -17,7 +20,7 @@ class Question {
     required this.title,
     required this.type,
     required this.answers,
-    required this.is_contextual,
+    required this.isContextual,
     this.context,
   });
 
@@ -25,7 +28,9 @@ class Question {
   String title;
   QuestionType type;
   List<Answer> answers;
-  bool is_contextual;
+
+  @JsonKey(name: 'is_contextual')
+  bool isContextual;
   String? context;
 
   factory Question.fromJson(Map<String, dynamic> json) =>

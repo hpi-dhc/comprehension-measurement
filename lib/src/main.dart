@@ -8,7 +8,7 @@ Future<void> measureComprehension({
   required int surveyId,
   required String introText,
   required String surveyButtonText,
-  Map<String, List<String>>? questionContext,
+  Map<String, List<String>> questionContext = const {},
   int? feedbackId,
   String feedbackButtonText = 'Close',
 }) async {
@@ -20,6 +20,7 @@ Future<void> measureComprehension({
         create: (context) => ComprehensionMeasurementModel(
           surveyId: surveyId,
           feedbackId: feedbackId,
+          questionContext: questionContext,
         ),
         child: ComprehensionMeasurementWidget(
           introText: introText,
