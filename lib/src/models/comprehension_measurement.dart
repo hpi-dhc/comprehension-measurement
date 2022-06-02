@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:comprehension_measurement/src/constants.dart';
+import 'package:comprehension_measurement/src/models/answer.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/models/survey.dart';
 import 'package:flutter/foundation.dart';
@@ -45,22 +48,30 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   }
 
   void evaluateQuestions() {
-    survey!.questions.map(
-      (question) {
-        if (question.isContextual) {
-          question.answers.map(
-            (answer) => answer.isRight =
-                questionContext[question.context]!.contains(answer.answerText),
-          );
+    for (Question question in survey!.questions) {
+      if (question.isContextual) {
+        for (Answer answer in question.answers) {
+          answer.isRight =
+              questionContext[question.context]!.contains(answer.answerText);
         }
-      },
-    );
+      }
+    }
   }
 
   //TODO: check if questions were already asked here
 
   void selectQuestions() {
-    survey!.questions = survey!.questions.take(surveyLength).toList();
+    List<Question> selectedQuestions = [];
+
+    final random = Random();
+
+    for (int i = 0; i < surveyLength; i++) {
+      Question question =
+          survey!.questions[random.nextInt(survey!.questions.length - 1)];
+      selectedQuestions.add(question);
+    }
+
+    survey!.questions = selectedQuestions;
   }
 
   Future<void> _loadQuestions(int? id) async {
