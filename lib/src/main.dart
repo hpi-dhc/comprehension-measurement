@@ -19,6 +19,10 @@ Future<void> measureComprehension({
 
   await initQuestionData();
 
+  if (QuestionData.instance.completedSurveys.contains(surveyId)) {
+    return;
+  }
+
   showBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,

@@ -43,8 +43,12 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       (question) =>
           (question.isContextual &&
               !questionContext.containsKey(question.context)) ||
-          QuestionData.instance.questionIds.contains(question.id),
+          QuestionData.instance.completedQuestions.contains(question.id),
     );
+
+    if (survey!.questions.length <= surveyLength) {
+      QuestionData.instance.completedSurveys.add(surveyId);
+    }
   }
 
   void evaluateQuestions() {
@@ -63,7 +67,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     survey!.questions = survey!.questions.take(surveyLength).toList();
 
     for (Question question in survey!.questions) {
-      QuestionData.instance.questionIds.add(question.id);
+      QuestionData.instance.completedQuestions.add(question.id);
     }
   }
 
