@@ -16,15 +16,19 @@ class QuestionDataAdapter extends TypeAdapter<QuestionData> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return QuestionData()..questionIds = (fields[0] as List).cast<int>();
+    return QuestionData()
+      ..completedQuestions = (fields[0] as Set).cast<int>()
+      ..completedSurveys = (fields[1] as Set).cast<int>();
   }
 
   @override
   void write(BinaryWriter writer, QuestionData obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.questionIds);
+      ..write(obj.completedQuestions.toList())
+      ..writeByte(1)
+      ..write(obj.completedSurveys.toList());
   }
 
   @override
