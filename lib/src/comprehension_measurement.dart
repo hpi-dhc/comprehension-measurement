@@ -35,6 +35,7 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
       BuildContext context,
       ComprehensionMeasurementModel value,
       ThemeData theme) {
+    int i = 0;
     return value.survey?.questions.map(
           (question) {
             Widget questionWidget;
@@ -75,40 +76,44 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                   color: theme.backgroundColor,
                 ),
                 questionWidget,
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 16.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ..._buildPageIndicator(
+                        context, i++, value.survey!.questions.length),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                        horizontal: 16.0,
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          bool shouldSend = false;
+                          switch (question.type) {
+                            case QuestionType.singleChoice:
+                              shouldSend = await value.saveSingleChoiceAnswer(
+                                question.id,
+                              );
+                              break;
+                            case QuestionType.multipleChoice:
+                              shouldSend = await value.saveMultipleChoiceAnswer(
+                                question.id,
+                              );
+                              break;
+                            case QuestionType.textAnswer:
+                              shouldSend = await value.saveTextAnswer(
+                                question.id,
+                              );
+                              break;
+                          }
+                          if (shouldSend) {
+                            continueSurvey();
+                          }
+                        },
+                        child: const Text('Send'),
+                      ),
                     ),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        bool shouldSend = false;
-                        switch (question.type) {
-                          case QuestionType.singleChoice:
-                            shouldSend = await value.saveSingleChoiceAnswer(
-                              question.id,
-                            );
-                            break;
-                          case QuestionType.multipleChoice:
-                            shouldSend = await value.saveMultipleChoiceAnswer(
-                              question.id,
-                            );
-                            break;
-                          case QuestionType.textAnswer:
-                            shouldSend = await value.saveTextAnswer(
-                              question.id,
-                            );
-                            break;
-                        }
-                        if (shouldSend) {
-                          continueSurvey();
-                        }
-                      },
-                      child: const Text('Send'),
-                    ),
-                  ),
+                  ],
                 )
               ],
             );
@@ -176,6 +181,31 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
             );
           },
         ),
+      ),
+    );
+  }
+
+  List<Widget> _buildPageIndicator(
+      BuildContext context, int currentPage, int maxPage) {
+    final list = <Widget>[];
+
+    for (int i = 0; i < maxPage; i++) {
+      list.add(_indicator(context, i == currentPage));
+    }
+
+    return list;
+  }
+
+  Widget _indicator(BuildContext context, bool isActive) {
+    final theme = Theme.of(context);
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      height: 8,
+      width: isActive ? 24 : 16,
+      decoration: BoxDecoration(
+        color: isActive ? theme.primaryColor : theme.disabledColor,
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
     );
   }
