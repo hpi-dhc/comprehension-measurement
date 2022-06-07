@@ -1,4 +1,3 @@
-import 'package:comprehension_measurement/src/models/questiondata.dart';
 import 'package:flutter/material.dart';
 
 class CompletionWidget extends StatelessWidget {
