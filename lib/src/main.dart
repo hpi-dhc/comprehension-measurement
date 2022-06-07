@@ -19,7 +19,7 @@ Future<void> measureComprehension({
 }) async {
   await Hive.initFlutter();
 
-  await initQuestionData();
+  await initSurveyData();
 
   if (SurveyData.instance.completedSurveys.contains(surveyId) ||
       SurveyData.instance.optOut) {

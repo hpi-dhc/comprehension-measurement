@@ -28,7 +28,7 @@ class SurveyData {
   bool optOut = false;
 }
 
-Future<void> initQuestionData() async {
+Future<void> initSurveyData() async {
   try {
     Hive.registerAdapter(SurveyDataAdapter());
   } catch (e) {
