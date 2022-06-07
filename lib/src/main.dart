@@ -1,4 +1,5 @@
 import 'package:comprehension_measurement/src/comprehension_measurement.dart';
+import 'package:comprehension_measurement/src/config.dart';
 import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
 import 'package:comprehension_measurement/src/models/questiondata.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ Future<void> measureComprehension({
   Map<String, List<String>> questionContext = const {},
   int? feedbackId,
   String feedbackButtonText = 'Close',
+  required SupabaseConfig supabaseConfig,
 }) async {
   await Hive.initFlutter();
 
@@ -32,6 +34,7 @@ Future<void> measureComprehension({
           surveyId: surveyId,
           feedbackId: feedbackId,
           questionContext: questionContext,
+          supabaseConfig: supabaseConfig,
         ),
         child: ComprehensionMeasurementWidget(
           introText: introText,

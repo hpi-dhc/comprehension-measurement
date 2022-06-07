@@ -33,3 +33,7 @@ build/
 
 # Generated dart files
 *.g.dart
+
+# Supabase
+**/supabase/.branches
+**/supabase/.temp

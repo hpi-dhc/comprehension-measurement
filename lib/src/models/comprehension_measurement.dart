@@ -1,4 +1,4 @@
-import 'package:comprehension_measurement/src/constants.dart';
+import 'package:comprehension_measurement/src/config.dart';
 import 'package:comprehension_measurement/src/models/answer.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/models/questiondata.dart';
@@ -13,22 +13,26 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     required this.questionContext,
     this.feedbackId,
     this.surveyLength = 4,
-  });
+    required this.supabaseConfig,
+  }) {
+    client = SupabaseClient(
+      supabaseConfig.supabaseUrl,
+      supabaseConfig.supabaseKey,
+    );
+  }
 
   Survey? survey;
   final int surveyId;
   final int? feedbackId;
   final int surveyLength;
+  final SupabaseConfig supabaseConfig;
+
+  late SupabaseClient client;
 
   Map<int, int> singleChoiceAnswers = {};
   Map<int, Set<int>> multipleChoiceAnswers = {};
   Map<int, String> textAnswers = {};
   final Map<String, List<String>> questionContext;
-
-  var client = SupabaseClient(
-    supabaseUrl,
-    supabaseKey,
-  );
 
   Future<void> loadSurvey() async {
     await _loadQuestions(surveyId);
