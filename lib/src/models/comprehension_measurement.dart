@@ -65,10 +65,6 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   void selectQuestions() {
     survey!.questions.shuffle();
     survey!.questions = survey!.questions.take(surveyLength).toList();
-
-    for (Question question in survey!.questions) {
-      QuestionData.instance.completedQuestions.add(question.id);
-    }
   }
 
   Future<void> _loadQuestions(int? id) async {

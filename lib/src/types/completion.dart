@@ -16,8 +16,7 @@ class CompletionWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: ElevatedButton(
-              onPressed: () async {
-                await QuestionData.save();
+              onPressed: () {
                 Navigator.pop(context);
               },
               child: const Text('Complete'),
