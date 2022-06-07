@@ -1,3 +1,0 @@
-const supabaseUrl = "https://xrnczlpeghrewcseaxyq.supabase.co";
-const supabaseKey =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhybmN6bHBlZ2hyZXdjc2VheHlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTI5NjIzNTksImV4cCI6MTk2ODUzODM1OX0.3SPL2iHbDRS4m42n6UlOIuV8tFMShi7b9Mzh9l8E4Gs";
