@@ -1,7 +1,7 @@
 import 'package:comprehension_measurement/src/config.dart';
 import 'package:comprehension_measurement/src/models/answer.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
-import 'package:comprehension_measurement/src/models/questiondata.dart';
+import 'package:comprehension_measurement/src/models/surveydata.dart';
 import 'package:comprehension_measurement/src/models/survey.dart';
 import 'package:flutter/foundation.dart';
 import 'package:supabase/supabase.dart';
@@ -47,11 +47,11 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       (question) =>
           (question.isContextual &&
               !questionContext.containsKey(question.context)) ||
-          QuestionData.instance.completedQuestions.contains(question.id),
+          SurveyData.instance.completedQuestions.contains(question.id),
     );
 
     if (survey!.questions.length <= surveyLength) {
-      QuestionData.instance.completedSurveys.add(surveyId);
+      SurveyData.instance.completedSurveys.add(surveyId);
     }
   }
 

@@ -1,6 +1,6 @@
 import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
-import 'package:comprehension_measurement/src/models/questiondata.dart';
+import 'package:comprehension_measurement/src/models/surveydata.dart';
 import 'package:comprehension_measurement/src/types/completion.dart';
 import 'package:comprehension_measurement/src/types/intro.dart';
 import 'package:comprehension_measurement/src/types/choice_question.dart';
@@ -108,9 +108,9 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                               break;
                           }
                           if (shouldSend) {
-                            QuestionData.instance.completedQuestions
+                            SurveyData.instance.completedQuestions
                                 .add(question.id);
-                            await QuestionData.save();
+                            await SurveyData.save();
                             continueSurvey();
                           }
                         },
