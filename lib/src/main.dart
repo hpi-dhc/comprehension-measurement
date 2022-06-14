@@ -3,7 +3,6 @@ import 'package:comprehension_measurement/src/config.dart';
 import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
 import 'package:comprehension_measurement/src/models/surveydata.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -41,7 +40,6 @@ Future<void> measureComprehension({
           introText: introText,
           surveyButtonText: surveyButtonText,
           feedbackButtonText: feedbackButtonText,
-          questionContext: questionContext,
         ),
       );
     },

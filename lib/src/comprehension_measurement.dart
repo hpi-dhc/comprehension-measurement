@@ -15,14 +15,12 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
     required this.introText,
     required this.surveyButtonText,
     required this.feedbackButtonText,
-    required this.questionContext,
   }) : super(key: key);
 
   final String introText;
   final String surveyButtonText;
   final String feedbackButtonText;
   final PageController controller = PageController();
-  final Map<String, List<String>> questionContext;
 
   void continueSurvey() {
     controller.nextPage(
@@ -89,25 +87,7 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                       ),
                       child: ElevatedButton(
                         onPressed: () async {
-                          bool shouldSend = false;
-                          switch (question.type) {
-                            case QuestionType.singleChoice:
-                              shouldSend = await value.saveSingleChoiceAnswer(
-                                question.id,
-                              );
-                              break;
-                            case QuestionType.multipleChoice:
-                              shouldSend = await value.saveMultipleChoiceAnswer(
-                                question.id,
-                              );
-                              break;
-                            case QuestionType.textAnswer:
-                              shouldSend = await value.saveTextAnswer(
-                                question.id,
-                              );
-                              break;
-                          }
-                          if (shouldSend) {
+                          if (await value.saveAnswer(question.id)) {
                             SurveyData.instance.completedQuestions
                                 .add(question.id);
                             await SurveyData.save();

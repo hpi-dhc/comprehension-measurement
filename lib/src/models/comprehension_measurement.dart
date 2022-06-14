@@ -13,9 +13,9 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     required this.questionContext,
     this.feedbackId,
     this.surveyLength = 4,
-    required this.supabaseConfig,
+    required SupabaseConfig supabaseConfig,
   }) {
-    client = SupabaseClient(
+    _client = SupabaseClient(
       supabaseConfig.supabaseUrl,
       supabaseConfig.supabaseKey,
     );
@@ -25,9 +25,8 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   final int surveyId;
   final int? feedbackId;
   final int surveyLength;
-  final SupabaseConfig supabaseConfig;
 
-  late SupabaseClient client;
+  late SupabaseClient _client;
 
   Map<int, int> singleChoiceAnswers = {};
   Map<int, Set<int>> multipleChoiceAnswers = {};
@@ -42,7 +41,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     await _loadQuestions(feedbackId);
   }
 
-  void filterQuestions() {
+  void _filterQuestions() {
     survey!.questions.removeWhere(
       (question) =>
           (question.isContextual &&
@@ -55,18 +54,18 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     }
   }
 
-  void evaluateQuestions() {
+  void _evaluateQuestions() {
     for (Question question in survey!.questions) {
       if (question.isContextual) {
         for (Answer answer in question.answers) {
-          answer.isRight =
+          answer.isCorrect =
               questionContext[question.context]!.contains(answer.answerText);
         }
       }
     }
   }
 
-  void selectQuestions() {
+  void _selectQuestions() {
     survey!.questions.shuffle();
     survey!.questions = survey!.questions.take(surveyLength).toList();
   }
@@ -78,7 +77,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       return;
     }
 
-    final response = await client
+    final response = await _client
         .from('surveys')
         .select('*,questions(*),questions(*,answers(*))')
         .eq('id', id)
@@ -89,14 +88,14 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
     assert(survey != null);
 
-    filterQuestions();
-    evaluateQuestions();
-    selectQuestions();
+    _filterQuestions();
+    _evaluateQuestions();
+    _selectQuestions();
 
     notifyListeners();
   }
 
-  void changeSingleChoiceAnswer(int questionId, int? answerId) async {
+  void changeSingleChoiceAnswer(int questionId, int? answerId) {
     if (answerId == null) {
       return;
     }
@@ -106,7 +105,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeMultipleChoiceAnswer(int questionId, int? answerId) async {
+  void changeMultipleChoiceAnswer(int questionId, int? answerId) {
     if (answerId == null) {
       return;
     }
@@ -120,7 +119,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeTextAnswer(int questionId, String? answerText) async {
+  void changeTextAnswer(int questionId, String? answerText) {
     if (answerText == null) {
       return;
     }
@@ -130,18 +129,15 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> saveSingleChoiceAnswer(questionId) async {
-    final answerId = singleChoiceAnswers[questionId];
-    final Question question = survey!.questions.firstWhere(
-      (element) => element.id == questionId,
-    );
+  Future<bool> _saveSingleChoiceAnswer(Question question) async {
+    final answerId = singleChoiceAnswers[question.id];
 
     if (answerId == null) {
       return false;
     }
 
     if (!question.isContextual) {
-      await client.rpc(
+      await _client.rpc(
         'select_answer',
         params: {'row_id': answerId},
       ).execute();
@@ -151,22 +147,19 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
             .firstWhere(
               (element) => element.id == answerId,
             )
-            .isRight ??
+            .isCorrect ??
         false) {
-      await client.rpc('increment_correct_answers',
-          params: {'row_id': questionId}).execute();
+      await _client.rpc('increment_correct_answers',
+          params: {'row_id': question.id}).execute();
     }
-    await client.rpc('increment_total_answers',
-        params: {'row_id': questionId}).execute();
+    await _client.rpc('increment_total_answers',
+        params: {'row_id': question.id}).execute();
 
     return true;
   }
 
-  Future<bool> saveMultipleChoiceAnswer(int questionId) async {
-    final answerIds = multipleChoiceAnswers[questionId];
-    final Question question = survey!.questions.firstWhere(
-      (element) => element.id == questionId,
-    );
+  Future<bool> _saveMultipleChoiceAnswer(Question question) async {
+    final answerIds = multipleChoiceAnswers[question.id];
 
     if (answerIds == null || answerIds.isEmpty) {
       return false;
@@ -174,7 +167,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
     if (!question.isContextual) {
       for (int answerId in answerIds) {
-        await client.rpc(
+        await _client.rpc(
           'select_answer',
           params: {'row_id': answerId},
         ).execute();
@@ -183,35 +176,50 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
     if (question.answers.every(
       (element) => answerIds.contains(element.id)
-          ? element.isRight ?? false
-          : !(element.isRight ?? true),
+          ? element.isCorrect ?? false
+          : !(element.isCorrect ?? true),
     )) {
-      await client.rpc('increment_correct_answers',
-          params: {'row_id': questionId}).execute();
+      await _client.rpc('increment_correct_answers',
+          params: {'row_id': question.id}).execute();
     }
 
-    await client.rpc('increment_total_answers',
-        params: {'row_id': questionId}).execute();
+    await _client.rpc('increment_total_answers',
+        params: {'row_id': question.id}).execute();
 
     return true;
   }
 
-  Future<bool> saveTextAnswer(int questionId) async {
+  Future<bool> _saveTextAnswer(int questionId) async {
     final answerText = textAnswers[questionId];
 
     if (answerText == null || answerText == '') {
       return false;
     }
-    await client.from('text_answers').insert([
+    await _client.from('text_answers').insert([
       {
         'answerText': answerText,
         'question_id': questionId,
       },
     ]).execute();
 
-    await client.rpc('increment_total_answers',
+    await _client.rpc('increment_total_answers',
         params: {'row_id': questionId}).execute();
 
     return true;
+  }
+
+  Future<bool> saveAnswer(int questionId) async {
+    final Question question = survey!.questions.firstWhere(
+      (element) => element.id == questionId,
+    );
+
+    switch (question.type) {
+      case QuestionType.singleChoice:
+        return await _saveSingleChoiceAnswer(question);
+      case QuestionType.multipleChoice:
+        return await _saveMultipleChoiceAnswer(question);
+      case QuestionType.textAnswer:
+        return await _saveTextAnswer(questionId);
+    }
   }
 }

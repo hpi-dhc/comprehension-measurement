@@ -6,14 +6,14 @@ part 'answer.g.dart';
 class Answer {
   Answer(
     this.id,
-    this.isRight,
+    this.isCorrect,
     this.answerText,
     this.timesSelected,
   );
 
   int id;
-  @JsonKey(name: 'is_right')
-  bool? isRight;
+  @JsonKey(name: 'is_correct')
+  bool? isCorrect;
 
   @JsonKey(name: 'answer_text')
   String answerText;
