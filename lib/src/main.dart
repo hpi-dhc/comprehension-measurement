@@ -11,7 +11,7 @@ Future<void> measureComprehension({
   required int surveyId,
   required String introText,
   required String surveyButtonText,
-  Map<String, List<String>> questionContext = const {},
+  Map<String, List<int>>? questionContext,
   int? feedbackId,
   String feedbackButtonText = 'Close',
   required SupabaseConfig supabaseConfig,

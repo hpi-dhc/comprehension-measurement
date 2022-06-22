@@ -10,7 +10,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   ComprehensionMeasurementModel({
     Key? key,
     required this.surveyId,
-    required this.questionContext,
+    this.questionContext,
     this.feedbackId,
     this.surveyLength = 4,
     required SupabaseConfig supabaseConfig,
@@ -19,6 +19,8 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       supabaseConfig.supabaseUrl,
       supabaseConfig.supabaseKey,
     );
+
+    questionContext ??= {};
   }
 
   Survey? survey;
@@ -31,7 +33,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   Map<int, int> singleChoiceAnswers = {};
   Map<int, Set<int>> multipleChoiceAnswers = {};
   Map<int, String> textAnswers = {};
-  final Map<String, List<String>> questionContext;
+  Map<String, List<int>>? questionContext;
 
   Future<void> loadSurvey() async {
     await _loadQuestions(surveyId);
@@ -45,7 +47,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     survey!.questions.removeWhere(
       (question) =>
           (question.isContextual &&
-              !questionContext.containsKey(question.context)) ||
+              !questionContext!.containsKey(question.context)) ||
           SurveyData.instance.completedQuestions.contains(question.id),
     );
 
@@ -59,7 +61,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       if (question.isContextual) {
         for (Answer answer in question.answers) {
           answer.isCorrect =
-              questionContext[question.context]!.contains(answer.answerText);
+              questionContext![question.context]!.contains(answer.id);
         }
       }
     }
@@ -76,6 +78,8 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     if (id == null) {
       return;
     }
+
+    questionContext ??= {};
 
     final response = await _client
         .from('surveys')
