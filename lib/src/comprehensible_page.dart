@@ -5,7 +5,7 @@ import 'package:comprehension_measurement/comprehension_measurement.dart';
 import 'package:flutter/material.dart';
 
 abstract class AutoComprehensiblePage extends StatefulWidget {
-  const AutoComprehensiblePage({
+  AutoComprehensiblePage({
     Key? key,
     this.comprehensionContext,
     required this.surveyId,
@@ -13,12 +13,18 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
     this.introText = 'Was the last page understandable for you?',
     this.surveyButtonText = 'Yes',
     this.feedbackButtonText = 'Close',
-    this.questionContext = const {},
+    this.questionContext,
     this.tab = false,
     this.didOpenTab,
     this.probability = 0.5,
     required this.supabaseConfig,
-  }) : super(key: key);
+  }) {
+    questionContext ??= {};
+  }
+
+  void setContext(String key, List<int> value) {
+    questionContext![key] = value;
+  }
 
   @protected
   Widget build(BuildContext context);
@@ -29,7 +35,7 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
   final String introText;
   final String surveyButtonText;
   final String feedbackButtonText;
-  final Map<String, List<String>> questionContext;
+  late Map<String, List<int>>? questionContext;
   final bool tab;
   final Function? didOpenTab;
   final double probability;
