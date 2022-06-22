@@ -43,7 +43,7 @@ class _IntroWidgetState extends State<IntroWidget> {
             child: Text(
               widget.text,
               style: theme.textTheme.bodyLarge,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.start,
             ),
           ),
           const SizedBox(
