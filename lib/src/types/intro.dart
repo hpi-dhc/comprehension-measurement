@@ -25,20 +25,38 @@ class IntroWidget extends StatefulWidget {
 class _IntroWidgetState extends State<IntroWidget> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 8.0,
         horizontal: 16.0,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.text),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 24.0,
+            ),
+            child: Text(
+              widget.text,
+              style: theme.textTheme.bodyLarge,
+              textAlign: TextAlign.start,
+            ),
+          ),
           const SizedBox(
             height: 16.0,
           ),
           CheckboxListTile(
-            title: const Text('Don\'t show this again'),
+            title: Text(
+              'Click this checkbox if you want to stop participating in surveys',
+              style: theme.textTheme.bodySmall,
+            ),
             value: SurveyData.instance.optOut,
+            controlAffinity: ListTileControlAffinity.leading,
+            visualDensity: VisualDensity.compact,
             onChanged: (value) {
               setState(() {
                 SurveyData.instance.optOut = value ?? false;
@@ -46,16 +64,8 @@ class _IntroWidgetState extends State<IntroWidget> {
             },
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  SurveyData.save();
-                  await widget.model.loadSurvey();
-                  widget.onQuestionsLoaded();
-                },
-                child: Text(widget.surveyButtonText),
-              ),
               ElevatedButton(
                 onPressed: () async {
                   SurveyData.save();
@@ -66,8 +76,21 @@ class _IntroWidgetState extends State<IntroWidget> {
                     widget.onQuestionsLoaded();
                   }
                 },
+                style: ElevatedButton.styleFrom(primary: theme.primaryColor),
                 child: Text(widget.feedbackButtonText),
-              )
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  SurveyData.save();
+                  await widget.model.loadSurvey();
+                  widget.onQuestionsLoaded();
+                },
+                style: ElevatedButton.styleFrom(primary: theme.primaryColor),
+                child: Text(widget.surveyButtonText),
+              ),
             ],
           )
         ],

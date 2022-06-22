@@ -55,11 +55,6 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Divider(
-                  thickness: 2,
-                  height: 2,
-                  color: theme.backgroundColor,
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 8.0,
@@ -69,23 +64,21 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
                     question.title,
                   ),
                 ),
-                Divider(
-                  thickness: 2,
-                  height: 2,
-                  color: theme.backgroundColor,
-                ),
                 questionWidget,
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ..._buildPageIndicator(
-                        context, i++, value.survey!.questions.length),
+                    Expanded(
+                      child: _buildPageIndicator(
+                          context, i++, value.survey!.questions.length),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 8.0,
                         horizontal: 16.0,
                       ),
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: theme.primaryColor),
                         onPressed: () async {
                           if (await value.saveAnswer(question.id)) {
                             SurveyData.instance.completedQuestions
@@ -115,30 +108,29 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
       width: double.infinity,
       child: Card(
         elevation: 4,
+        clipBehavior: Clip.hardEdge,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Consumer<ComprehensionMeasurementModel>(
           builder: (context, value, child) {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8.0,
-                    horizontal: 0.0,
-                  ),
+                Container(
+                  color: theme.primaryColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16.0),
                         child: Icon(
                           Icons.assignment,
-                          color: theme.primaryColor,
+                          color: Colors.white,
                         ),
                       ),
                       IconButton(
                         onPressed: () => Navigator.pop(context),
                         icon: const Icon(Icons.close),
+                        color: Colors.white,
                       )
                     ],
                   ),
@@ -169,7 +161,7 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildPageIndicator(
+  Widget _buildPageIndicator(
       BuildContext context, int currentPage, int maxPage) {
     final list = <Widget>[];
 
@@ -177,7 +169,10 @@ class ComprehensionMeasurementWidget extends StatelessWidget {
       list.add(_indicator(context, i == currentPage));
     }
 
-    return list;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: list,
+    );
   }
 
   Widget _indicator(BuildContext context, bool isActive) {
