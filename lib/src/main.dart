@@ -11,7 +11,7 @@ Future<void> measureComprehension({
   required int surveyId,
   required String introText,
   required String surveyButtonText,
-  Map<String, List<int>>? questionContext,
+  Map<String, List<int>> questionContext = const {},
   int? feedbackId,
   String feedbackButtonText = 'Close',
   required SupabaseConfig supabaseConfig,
@@ -24,22 +24,22 @@ Future<void> measureComprehension({
       SurveyData.instance.optOut) {
     return;
   }
-
-  showBottomSheet(
+  showDialog(
     context: context,
-    backgroundColor: Colors.transparent,
     builder: (BuildContext context) {
-      return ChangeNotifierProvider(
-        create: (context) => ComprehensionMeasurementModel(
-          surveyId: surveyId,
-          feedbackId: feedbackId,
-          questionContext: questionContext,
-          supabaseConfig: supabaseConfig,
-        ),
-        child: ComprehensionMeasurementWidget(
-          introText: introText,
-          surveyButtonText: surveyButtonText,
-          feedbackButtonText: feedbackButtonText,
+      return Center(
+        child: ChangeNotifierProvider(
+          create: (context) => ComprehensionMeasurementModel(
+            surveyId: surveyId,
+            feedbackId: feedbackId,
+            questionContext: questionContext,
+            supabaseConfig: supabaseConfig,
+          ),
+          child: ComprehensionMeasurementWidget(
+            introText: introText,
+            surveyButtonText: surveyButtonText,
+            feedbackButtonText: feedbackButtonText,
+          ),
         ),
       );
     },

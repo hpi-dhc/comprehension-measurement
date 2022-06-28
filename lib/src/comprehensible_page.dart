@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 abstract class AutoComprehensiblePage extends StatefulWidget {
   AutoComprehensiblePage({
     Key? key,
-    this.comprehensionContext,
+    this.context,
     required this.surveyId,
     this.feedbackId,
     this.introText = 'Was the last page understandable for you?',
@@ -29,7 +29,7 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
   @protected
   Widget build(BuildContext context);
 
-  final BuildContext? comprehensionContext;
+  final BuildContext? context;
   final int surveyId;
   final int? feedbackId;
   final String introText;
@@ -86,13 +86,13 @@ class _AutoComprehensiblePageState extends State<AutoComprehensiblePage>
 
     if (randomDouble <= widget.probability) {
       measureComprehension(
-        context: widget.comprehensionContext ?? context,
+        context: widget.context ?? context,
         surveyId: widget.surveyId,
         feedbackId: widget.feedbackId,
         introText: widget.introText,
         surveyButtonText: widget.surveyButtonText,
         feedbackButtonText: widget.feedbackButtonText,
-        questionContext: widget.questionContext,
+        questionContext: widget.questionContext!,
         supabaseConfig: widget.supabaseConfig,
       );
     }

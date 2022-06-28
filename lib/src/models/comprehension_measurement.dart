@@ -219,11 +219,11 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
     switch (question.type) {
       case QuestionType.singleChoice:
-        return await _saveSingleChoiceAnswer(question);
+        return _saveSingleChoiceAnswer(question);
       case QuestionType.multipleChoice:
-        return await _saveMultipleChoiceAnswer(question);
+        return _saveMultipleChoiceAnswer(question);
       case QuestionType.textAnswer:
-        return await _saveTextAnswer(questionId);
+        return _saveTextAnswer(questionId);
     }
   }
 }
