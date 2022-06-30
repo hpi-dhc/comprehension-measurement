@@ -20,7 +20,6 @@ class Question {
     required this.title,
     required this.type,
     required this.answers,
-    required this.isContextual,
     this.context,
   });
 
@@ -28,9 +27,6 @@ class Question {
   String title;
   QuestionType type;
   List<Answer> answers;
-
-  @JsonKey(name: 'is_contextual')
-  bool isContextual;
   String? context;
 
   factory Question.fromJson(Map<String, dynamic> json) =>

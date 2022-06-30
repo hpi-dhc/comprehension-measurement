@@ -26,6 +26,9 @@ class ChoiceQuestionWidget extends StatelessWidget {
           model: model,
         );
         break;
+      case QuestionType.textAnswer:
+        throw FlutterError(
+            "Questions of type 'text_answer' can not be displayed using a choice view");
     }
   }
 

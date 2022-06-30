@@ -46,7 +46,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   void _filterQuestions() {
     survey!.questions.removeWhere(
       (question) =>
-          (question.isContextual &&
+          (question.context != null &&
               !questionContext!.containsKey(question.context)) ||
           SurveyData.instance.completedQuestions.contains(question.id),
     );
@@ -58,7 +58,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
   void _evaluateQuestions() {
     for (Question question in survey!.questions) {
-      if (question.isContextual) {
+      if (question.context != null) {
         for (Answer answer in question.answers) {
           answer.isCorrect =
               questionContext![question.context]!.contains(answer.id);
@@ -140,7 +140,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       return false;
     }
 
-    if (!question.isContextual) {
+    if (question.context == null) {
       await _client.rpc(
         'select_answer',
         params: {'row_id': answerId},
@@ -169,7 +169,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
       return false;
     }
 
-    if (!question.isContextual) {
+    if (question.context == null) {
       for (int answerId in answerIds) {
         await _client.rpc(
           'select_answer',

@@ -18,7 +18,7 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
     this.didOpenTab,
     this.probability = 0.5,
     required this.supabaseConfig,
-  }) {
+  }) : super(key: key) {
     questionContext ??= {};
   }
 
