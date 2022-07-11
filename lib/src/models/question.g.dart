@@ -19,7 +19,7 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
 Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'type': _$QuestionTypeEnumMap[instance.type],
+      'type': _$QuestionTypeEnumMap[instance.type]!,
       'answers': instance.answers,
       'context': instance.context,
     };
