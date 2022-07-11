@@ -31,9 +31,6 @@ build/
 .flutter-plugins
 .flutter-plugins-dependencies
 
-# Generated dart files
-*.g.dart
-
 # Supabase
 **/supabase/.branches
 **/supabase/.temp
