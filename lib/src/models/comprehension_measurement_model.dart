@@ -148,9 +148,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     }
 
     if (question.answers
-            .firstWhere(
-              (element) => element.id == answerId,
-            )
+            .firstWhere((element) => element.id == answerId)
             .isCorrect ??
         false) {
       await _client.rpc('increment_correct_answers',
