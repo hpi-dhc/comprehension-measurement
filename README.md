@@ -36,42 +36,43 @@ Intro | Completion
 - Opt-out
 - Persistent Storage of already answered questions
 
+## Setup
 
-## Getting started
-
-1. Clone this project
-2. [Setup Database](#setup-database-supabase)
-
-### Setup Database (Supabase)
-
-Detailed instructions can be found here: [Supabase Local Development](https://supabase.com/docs/guides/local-development)
-
-**Prerequisites:** [Supabase Prerequisites](https://supabase.com/docs/guides/local-development#prerequisites)
-
-**Steps:**
-
-1. Run `supabase start` in package root directory to start a local supabase emulator.
-2. Run `supabase db reset` to run migrations and fill local database with seed data.
-3. [Create supabase project](https://app.supabase.com/).
-4. [Link your CLI to your project](https://supabase.com/docs/guides/local-development#linking-your-project).
-5. Run `supabase db push` to deploy local database migrations to remote database.
-
-In your app you need to create a `SupabaseConfig`-instance with your credentials to pass it to the package.
-
-```dart
-final supabaseConfig = SupabaseConfig(<supabaseUrl>, <supabaseKey>)
+1. Import this package into your Flutter package. See an example on how to achieve this below.
+```yaml
+scio:
+    git: 
+      url: https://github.com/hpi-dhc/scio.git
+      ref: main
 ```
-
-**Values for local database:**
-After running `supabase start` you get your credentials:
-
-```console
-supabaseUrl = API URL
-supabaseKey = anon key
+2. [Create supabase project](https://app.supabase.com/).
+3. Initialize the project tables. You can import [this file](example/database_dump)
+into your Supabase project. How to do this is described in [this Supabase discussion](https://github.com/supabase/supabase/discussions/773).
+4. Add the following SQL queries under '/sql':
+```sql
+create function increment_correct_answers(row_id int)
+returns void as
+$$
+  update questions
+  set correct_answers = correct_answers + 1
+  where id = row_id;
+$$
+language sql volatile;
 ```
+```sql
+create function increment_total_answers(row_id int)
+returns void as
+$$
+  update questions
+  set total_answers = total_answers + 1
+  where id = row_id;
+$$
+language sql volatile;
+```
+These are needed to track the number of correct and total answers to your questions.
 
-**Values for remote database:**
-Go to your project on Supabase and then go to `API > Authentication` to find your credentials there.
+5. Add the surveys, questions and answers that you need
+6. Use Scio to measure user comprehension in your project
 
 ## Usage
 
@@ -97,7 +98,7 @@ widget.
 
 ### Use `ComprehensionHelper`-class
 
-When pushing a new page we can attach the helper method `ComprehensionHelper.attach` to it. This is done by passing a method call like `context.router.push(Route())` to the singleton. After the page is popped from the router stack, which means that the user has left the page, the survey is called. For example, this class can be used when the tab is changed, since this does not pop the target page from the router stack, but still leaves the page.
+When pushing a new page we can attach the helper method `ComprehensionHelper.instance.attach` to it. This is done by passing a method call like `context.router.push(Route())` to the singleton. After the page is popped from the router stack, which means that the user has left the page, the survey is called. For example, this class can be used when the tab is changed, since this does not pop the target page from the router stack, but still leaves the page.
 
 ### Use `AutoComprehensiblePage`
 
@@ -108,6 +109,10 @@ For this to work, you have to add the class `AutoRouteObserver` to your [`AutoRo
 ## Contextual Questions
 
 This package enables you to personalize questions based on the context of your application. Just pass a `questionContext` to the package, with key value pairs you are referencing in the database with `is_contextual` set to true and the `context` set to the key.
+
+## Contributions
+
+Contributions, issues and feature requests are welcome. Read our [Contribution Guide](CONTRIBUTING.md) to get started.
 
 ## Additional information
 
