@@ -11,7 +11,7 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-# Comprehension Measurement 💡
+# Scio – comprehension measurement tool 💡
 
 This package simplies measuring the users comprehension of your mobile application. After a quick setup you can ask questions to your users and improve your user experience with the generated insights. The questions are displayed in a survey-like environment and can require multiple choice, single choice or text answers. The questions can be static as well as contextual, where your app provides all necessary information to personalize your survey.
 

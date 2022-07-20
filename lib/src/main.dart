@@ -12,6 +12,7 @@ Future<void> measureComprehension({
   required String introText,
   required String surveyButtonText,
   Map<String, List<int>> questionContext = const {},
+  int surveyLength = 4,
   int? feedbackId,
   String feedbackButtonText = 'Close',
   required SupabaseConfig supabaseConfig,
@@ -33,6 +34,7 @@ Future<void> measureComprehension({
             surveyId: surveyId,
             feedbackId: feedbackId,
             questionContext: questionContext,
+            surveyLength: surveyLength,
             supabaseConfig: supabaseConfig,
           ),
           child: ComprehensionMeasurementWidget(
