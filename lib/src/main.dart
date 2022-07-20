@@ -1,6 +1,6 @@
-import 'package:comprehension_measurement/src/comprehension_measurement.dart';
+import 'package:comprehension_measurement/src/comprehension_measurement_widget.dart';
 import 'package:comprehension_measurement/src/config.dart';
-import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
+import 'package:comprehension_measurement/src/models/comprehension_measurement_model.dart';
 import 'package:comprehension_measurement/src/models/surveydata.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

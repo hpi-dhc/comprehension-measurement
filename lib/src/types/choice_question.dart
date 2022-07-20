@@ -1,4 +1,4 @@
-import 'package:comprehension_measurement/src/models/comprehension_measurement.dart';
+import 'package:comprehension_measurement/src/models/comprehension_measurement_model.dart';
 import 'package:comprehension_measurement/src/models/question.dart';
 import 'package:comprehension_measurement/src/types/multi_choice.dart';
 import 'package:comprehension_measurement/src/types/single_choice.dart';

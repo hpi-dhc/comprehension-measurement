@@ -1,4 +1,4 @@
-import 'package:comprehension_measurement/comprehension_measurement.dart';
+import 'package:comprehension_measurement/scio.dart';
 import 'package:flutter/material.dart';
 
 class ComprehensionHelper {
