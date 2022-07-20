@@ -46,8 +46,8 @@ scio:
       ref: main
 ```
 2. [Create supabase project](https://app.supabase.com/).
-3. Initialize the project tables. You can import [this file](example/dummyFile)
-into you Supabase project. How to do this is described in [this Supabase discussion](https://github.com/supabase/supabase/discussions/773).
+3. Initialize the project tables. You can import [this file](example/database_dump)
+into your Supabase project. How to do this is described in [this Supabase discussion](https://github.com/supabase/supabase/discussions/773).
 4. Add the following SQL queries under '/sql':
 ```sql
 create function increment_correct_answers(row_id int)
