@@ -2,10 +2,18 @@ import 'package:comprehension_measurement/scio.dart';
 import 'package:flutter/material.dart';
 
 class ComprehensionHelper {
-  static bool shouldMeasure = false;
-  static Map<String, List<int>> questionContext = {};
+  factory ComprehensionHelper() => _instance;
 
-  static void attach(
+  ComprehensionHelper._();
+
+  static final ComprehensionHelper _instance = ComprehensionHelper._();
+
+  static ComprehensionHelper get instance => _instance;
+
+  bool shouldMeasure = false;
+  Map<String, List<int>> questionContext = {};
+
+  void attach(
     Future future, {
     required BuildContext context,
     required int surveyId,
@@ -15,8 +23,8 @@ class ComprehensionHelper {
     int? feedbackId,
     String feedbackButtonText = 'Close',
   }) {
-    ComprehensionHelper.shouldMeasure = true;
-    future.then((_) => ComprehensionHelper.measure(
+    ComprehensionHelper.instance.shouldMeasure = true;
+    future.then((_) => ComprehensionHelper.instance.measure(
           context: context,
           surveyId: surveyId,
           introText: introText,
@@ -27,7 +35,7 @@ class ComprehensionHelper {
         ));
   }
 
-  static void measure({
+  void measure({
     required BuildContext context,
     required int surveyId,
     required String introText,
@@ -36,17 +44,17 @@ class ComprehensionHelper {
     int? feedbackId,
     String feedbackButtonText = 'Close',
   }) {
-    if (!shouldMeasure) return;
+    if (!instance.shouldMeasure) return;
     measureComprehension(
       context: context,
       surveyId: surveyId,
       introText: introText,
       surveyButtonText: surveyButtonText,
       supabaseConfig: supabaseConfig,
-      questionContext: questionContext,
+      questionContext: instance.questionContext,
       feedbackId: feedbackId,
       feedbackButtonText: feedbackButtonText,
     );
-    shouldMeasure = false;
+    instance.shouldMeasure = false;
   }
 }
