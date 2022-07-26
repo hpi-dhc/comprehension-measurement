@@ -1,7 +1,7 @@
-import 'package:comprehension_measurement/src/models/answer.dart';
-import 'package:comprehension_measurement/src/models/comprehension_measurement_model.dart';
-import 'package:comprehension_measurement/src/models/question.dart';
-import 'package:comprehension_measurement/src/types/multi_choice.dart';
+import 'package:scio/src/models/answer.dart';
+import 'package:scio/src/models/comprehension_measurement_model.dart';
+import 'package:scio/src/models/question.dart';
+import 'package:scio/src/types/multi_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

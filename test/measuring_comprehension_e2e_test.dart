@@ -1,8 +1,8 @@
-import 'package:comprehension_measurement/src/comprehension_measurement_widget.dart';
+import 'package:scio/src/comprehension_measurement_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:comprehension_measurement/scio.dart';
+import 'package:scio/scio.dart';
 
 import 'supabase_config.dart';
 

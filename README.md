@@ -1,16 +1,3 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
 # Scio – comprehension measurement tool 💡
 
 This package simplies measuring the users comprehension of your mobile application. After a quick setup you can ask questions to your users and improve your user experience with the generated insights. The questions are displayed in a survey-like environment and can require multiple choice, single choice or text answers. The questions can be static as well as contextual, where your app provides all necessary information to personalize your survey.
@@ -18,11 +5,6 @@ This package simplies measuring the users comprehension of your mobile applicati
 Text |  Multiple Choice | Single Choice
 :---:|:----------------:|:--------------:
 ![Text Widget](https://user-images.githubusercontent.com/16440155/176430213-163a1854-1bcb-44db-80b8-b2f7385cb8d9.png) |![Multiple Choice Widget](https://user-images.githubusercontent.com/16440155/176430341-85da1d1e-9f46-4adf-a964-03f69be9678e.png)  |  ![Single Choice Widget](https://user-images.githubusercontent.com/16440155/176429898-2bc845cb-a13b-418c-80ef-dbc52ccb743b.png)
-
-<!--
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
--->
 
 ## Features
 
@@ -39,12 +21,11 @@ Intro | Completion
 ## Setup
 
 1. Import this package into your Flutter package. See an example on how to achieve this below.
+
 ```yaml
-scio:
-    git: 
-      url: https://github.com/hpi-dhc/scio.git
-      ref: main
+scio: ^0.1.0
 ```
+
 2. [Create supabase project](https://app.supabase.com/).
 3. Initialize the project tables. You can import [this file](example/database_dump)
 into your Supabase project. How to do this is described in [this Supabase discussion](https://github.com/supabase/supabase/discussions/773).
@@ -121,11 +102,5 @@ The `ComprehensionMeasurementModel` and `ComprehensionMeasurementWidget` and the
 Contributions, issues and feature requests are welcome. Read our [Contribution Guide](CONTRIBUTING.md) to get started.
 
 ## Additional information
-
-<!--
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
--->
 
 This package was developed in the context of the project [PharMe](https://github.com/hpi-dhc/PharMe). Their you can find an example integration.

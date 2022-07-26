@@ -1,5 +1,5 @@
-import 'package:comprehension_measurement/src/models/answer.dart';
-import 'package:comprehension_measurement/src/models/comprehension_measurement_model.dart';
+import 'package:scio/src/models/answer.dart';
+import 'package:scio/src/models/comprehension_measurement_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:supabase/supabase.dart';

@@ -1,8 +1,8 @@
-import 'package:comprehension_measurement/src/config.dart';
-import 'package:comprehension_measurement/src/models/answer.dart';
-import 'package:comprehension_measurement/src/models/question.dart';
-import 'package:comprehension_measurement/src/models/surveydata.dart';
-import 'package:comprehension_measurement/src/models/survey.dart';
+import 'package:scio/src/config.dart';
+import 'package:scio/src/models/answer.dart';
+import 'package:scio/src/models/question.dart';
+import 'package:scio/src/models/surveydata.dart';
+import 'package:scio/src/models/survey.dart';
 import 'package:flutter/foundation.dart';
 import 'package:supabase/supabase.dart';
 

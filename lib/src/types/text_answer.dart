@@ -1,4 +1,4 @@
-import 'package:comprehension_measurement/src/models/comprehension_measurement_model.dart';
+import 'package:scio/src/models/comprehension_measurement_model.dart';
 import 'package:flutter/material.dart';
 
 class TextAnswerWidget extends StatelessWidget {

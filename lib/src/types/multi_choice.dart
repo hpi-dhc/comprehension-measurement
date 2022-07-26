@@ -1,5 +1,5 @@
-import 'package:comprehension_measurement/src/models/comprehension_measurement_model.dart';
-import 'package:comprehension_measurement/src/models/question.dart';
+import 'package:scio/src/models/comprehension_measurement_model.dart';
+import 'package:scio/src/models/question.dart';
 import 'package:flutter/material.dart';
 
 class MultipleChoiceWidget extends StatelessWidget {

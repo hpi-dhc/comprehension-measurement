@@ -1,4 +1,4 @@
-import 'package:comprehension_measurement/src/models/question.dart';
+import 'package:scio/src/models/question.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'question.dart';

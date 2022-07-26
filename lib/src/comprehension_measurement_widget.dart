@@ -1,10 +1,10 @@
-import 'package:comprehension_measurement/src/models/comprehension_measurement_model.dart';
-import 'package:comprehension_measurement/src/models/question.dart';
-import 'package:comprehension_measurement/src/models/surveydata.dart';
-import 'package:comprehension_measurement/src/types/completion.dart';
-import 'package:comprehension_measurement/src/types/intro.dart';
-import 'package:comprehension_measurement/src/types/choice_question.dart';
-import 'package:comprehension_measurement/src/types/text_answer.dart';
+import 'package:scio/src/models/comprehension_measurement_model.dart';
+import 'package:scio/src/models/question.dart';
+import 'package:scio/src/models/surveydata.dart';
+import 'package:scio/src/types/completion.dart';
+import 'package:scio/src/types/intro.dart';
+import 'package:scio/src/types/choice_question.dart';
+import 'package:scio/src/types/text_answer.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
