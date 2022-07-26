@@ -1,6 +1,6 @@
 name: scio
 description: Comprehension measurement tool
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/hpi-dhc/scio
 
 environment:
