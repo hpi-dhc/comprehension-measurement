@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:comprehension_measurement/scio.dart';
 
+import 'supabase_config.dart';
+
 Widget createWidgetForTesting(Widget widget) {
   return MaterialApp(
     home: Scaffold(
@@ -26,10 +28,7 @@ void main() {
               feedbackButtonText: 'feedbackButtonText',
               feedbackId: 2,
               surveyLength: 6,
-              supabaseConfig: SupabaseConfig(
-                'http://localhost:54321',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24ifQ.625_WdcF3KHqz5amU0x2X5WWHP-OEs_4qj0ssLNHzTs',
-              ),
+              supabaseConfig: supabaseConfig,
               enablePersistence: false,
             ),
             child: const Text('text'),

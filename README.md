@@ -110,6 +110,12 @@ For this to work, you have to add the class `AutoRouteObserver` to your [`AutoRo
 
 This package enables you to personalize questions based on the context of your application. Just pass a `questionContext` to the package, with key value pairs you are referencing in the database with `is_contextual` set to true and the `context` set to the key.
 
+## Testing
+
+The total line coverage is 65.1%. 
+
+The `ComprehensionMeasurementModel` and `ComprehensionMeasurementWidget` and the other widgets located in the `types` folder are fully tested. However the `ComprehensionHelper` and `AutoComprehensiblePage` are not tested. Moreover, we do not test the Hive box  `SurveyData` and we do not cover generated files, because all are external dependencies.
+
 ## Contributions
 
 Contributions, issues and feature requests are welcome. Read our [Contribution Guide](CONTRIBUTING.md) to get started.

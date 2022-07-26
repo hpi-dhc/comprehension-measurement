@@ -33,3 +33,9 @@ supabaseKey = anon key
 
 **Values for remote database:**
 Go to your project on Supabase and then go to `API > Authentication` to find your credentials there.
+
+## Testing
+
+1. Start the test database
+2. Set your local Supabase credentials in `test/supabase_config.dart`
+3. Run the tests with `flutter test`
