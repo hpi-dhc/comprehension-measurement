@@ -14,6 +14,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
     this.feedbackId,
     this.surveyLength = 4,
     required SupabaseConfig supabaseConfig,
+    this.enablePersistence = true,
   }) {
     _client = SupabaseClient(
       supabaseConfig.supabaseUrl,
@@ -27,6 +28,7 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
   final int surveyId;
   final int? feedbackId;
   final int surveyLength;
+  final bool enablePersistence;
 
   late SupabaseClient _client;
 
@@ -45,11 +47,14 @@ class ComprehensionMeasurementModel extends ChangeNotifier {
 
   void _filterQuestions() {
     survey!.questions.removeWhere(
-      (question) =>
-          (question.context != null &&
-              !questionContext!.containsKey(question.context)) ||
-          SurveyData.instance.completedQuestions.contains(question.id),
+      (question) => (question.context != null &&
+          !questionContext!.containsKey(question.context)),
     );
+
+    if (enablePersistence) {
+      survey!.questions.removeWhere((question) =>
+          SurveyData.instance.completedQuestions.contains(question.id));
+    }
 
     if (survey!.questions.length <= surveyLength) {
       SurveyData.instance.completedSurveys.add(surveyId);

@@ -18,6 +18,7 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
     this.didOpenTab,
     this.probability = 0.5,
     required this.supabaseConfig,
+    this.enablePersistence = true,
   }) : super(key: key) {
     questionContext ??= {};
   }
@@ -40,6 +41,7 @@ abstract class AutoComprehensiblePage extends StatefulWidget {
   final Function? didOpenTab;
   final double probability;
   final SupabaseConfig supabaseConfig;
+  final bool enablePersistence;
 
   @override
   State<AutoComprehensiblePage> createState() => _AutoComprehensiblePageState();
@@ -94,6 +96,7 @@ class _AutoComprehensiblePageState extends State<AutoComprehensiblePage>
         feedbackButtonText: widget.feedbackButtonText,
         questionContext: widget.questionContext!,
         supabaseConfig: widget.supabaseConfig,
+        enablePersistence: widget.enablePersistence,
       );
     }
   }

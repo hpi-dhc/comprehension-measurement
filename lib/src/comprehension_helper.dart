@@ -22,17 +22,18 @@ class ComprehensionHelper {
     required SupabaseConfig supabaseConfig,
     int? feedbackId,
     String feedbackButtonText = 'Close',
+    bool enablePersistence = true,
   }) {
     ComprehensionHelper.instance.shouldMeasure = true;
     future.then((_) => ComprehensionHelper.instance.measure(
-          context: context,
-          surveyId: surveyId,
-          introText: introText,
-          surveyButtonText: surveyButtonText,
-          supabaseConfig: supabaseConfig,
-          feedbackId: feedbackId,
-          feedbackButtonText: feedbackButtonText,
-        ));
+        context: context,
+        surveyId: surveyId,
+        introText: introText,
+        surveyButtonText: surveyButtonText,
+        supabaseConfig: supabaseConfig,
+        feedbackId: feedbackId,
+        feedbackButtonText: feedbackButtonText,
+        enablePersistence: enablePersistence));
   }
 
   void measure({
@@ -43,6 +44,7 @@ class ComprehensionHelper {
     required SupabaseConfig supabaseConfig,
     int? feedbackId,
     String feedbackButtonText = 'Close',
+    bool enablePersistence = true,
   }) {
     if (!instance.shouldMeasure) return;
     measureComprehension(
@@ -54,6 +56,7 @@ class ComprehensionHelper {
       questionContext: instance.questionContext,
       feedbackId: feedbackId,
       feedbackButtonText: feedbackButtonText,
+      enablePersistence: enablePersistence,
     );
     instance.shouldMeasure = false;
   }

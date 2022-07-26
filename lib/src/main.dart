@@ -15,11 +15,13 @@ Future<void> measureComprehension({
   int surveyLength = 4,
   int? feedbackId,
   String feedbackButtonText = 'Close',
+  bool enablePersistence = true,
   required SupabaseConfig supabaseConfig,
 }) async {
-  await Hive.initFlutter();
-
-  await initSurveyData();
+  if (enablePersistence) {
+    await Hive.initFlutter();
+    await initSurveyData();
+  }
 
   if (SurveyData.instance.completedSurveys.contains(surveyId) ||
       SurveyData.instance.optOut) {
@@ -36,6 +38,7 @@ Future<void> measureComprehension({
             questionContext: questionContext,
             surveyLength: surveyLength,
             supabaseConfig: supabaseConfig,
+            enablePersistence: enablePersistence,
           ),
           child: ComprehensionMeasurementWidget(
             introText: introText,
